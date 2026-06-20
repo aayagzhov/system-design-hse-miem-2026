@@ -522,6 +522,24 @@ docker compose down
 
 Скриншоты/выводы: `HW\screenshots\`
 
+### Если контейнеры `Exited (2)` и в логах `entrypoint.sh: Syntax error`
+
+Причина: Git на Windows подменил переносы строк в `entrypoint.sh` (CRLF вместо LF).
+
+```powershell
+cd code\postgres-ha
+git config core.autocrlf false
+git pull
+.\fix-line-endings.ps1
+cd patroni-master
+docker build --build-arg PG_MAJOR=15 -t patroni .
+cd ..
+docker compose down
+docker compose up -d
+Start-Sleep -Seconds 90
+docker exec demo-patroni1 patronictl list
+```
+
 ---
 
 # Сдача
@@ -556,6 +574,7 @@ Copy-Item HW\HW1.md 2\HW1.md
 | `psql` connection refused | Подключайся через `haproxy`, не напрямую в patroni: `-h haproxy -p 5001` |
 | `docker build` timeout | `docker build --build-arg PG_MAJOR=15 -t patroni .` |
 | `gzip: unexpected end of file` при build | GitHub оборвал etcd: `.\download-deps.ps1` затем `docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .` |
+| `entrypoint.sh: Syntax error` / `Exited (2)` | CRLF на Windows: см. ниже |
 | Путь с пробелами | Возьми путь в кавычки: `cd "C:\Users\Имя\My Projects\..."` |
 
 ---
