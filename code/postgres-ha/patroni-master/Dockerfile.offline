@@ -16,6 +16,10 @@ ARG LANG
 
 ENV ETCDVERSION=3.3.13 CONFDVERSION=0.16.0
 
+# Скачай заранее: .\download-deps.ps1  →  vendor\etcd.tar.gz + vendor\confd
+COPY vendor/etcd.tar.gz /tmp/etcd.tar.gz
+COPY vendor/confd /tmp/confd
+
 RUN set -ex \
     && export DEBIAN_FRONTEND=noninteractive \
     && echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > /etc/apt/apt.conf.d/01norecommend \
@@ -48,34 +52,15 @@ RUN set -ex \
     && sed -i "s|/var/lib/postgresql.*|$PGHOME:/bin/bash|" /etc/passwd \
     && chown -R postgres:postgres /var/log \
 \
-    # Download etcd (retry on flaky network)
-    && for i in 1 2 3 4 5; do \
-         curl -fsSL --connect-timeout 30 --max-time 300 \
-           "https://github.com/coreos/etcd/releases/download/v$ETCDVERSION/etcd-v$ETCDVERSION-linux-$(dpkg --print-architecture).tar.gz" \
-           -o /tmp/etcd.tar.gz && break; \
-         echo "etcd download attempt $$i failed, retrying..."; sleep 10; \
-       done \
+    # etcd + confd из vendor/ (без GitHub внутри build)
     && tar xzf /tmp/etcd.tar.gz -C /usr/local/bin --strip=1 --wildcards --no-anchored etcd etcdctl \
-    && rm /tmp/etcd.tar.gz \
+    && cp /tmp/confd /usr/local/bin/confd && chmod +x /usr/local/bin/confd \
+    && rm /tmp/etcd.tar.gz /tmp/confd \
 \
     && if [ $(dpkg --print-architecture) = 'arm64' ]; then \
-        # Build confd
-        apt-get install -y git make \
-        && curl -fsSL --connect-timeout 30 --max-time 300 https://go.dev/dl/go1.20.4.linux-arm64.tar.gz | tar xz -C /usr/local go \
-        && export GOROOT=/usr/local/go && export PATH=$PATH:$GOROOT/bin \
-        && git clone --recurse-submodules https://github.com/kelseyhightower/confd.git \
-        && make -C confd \
-        && cp confd/bin/confd /usr/local/bin/confd \
-        && rm -rf /confd /usr/local/go; \
+        echo "Dockerfile.offline: amd64 only. Use Dockerfile on arm64."; exit 1; \
     else \
-        # Download confd (retry on flaky network)
-        for i in 1 2 3 4 5; do \
-          curl -fsSL --connect-timeout 30 --max-time 300 \
-            "https://github.com/kelseyhightower/confd/releases/download/v$CONFDVERSION/confd-$CONFDVERSION-linux-$(dpkg --print-architecture)" \
-            -o /usr/local/bin/confd && break; \
-          echo "confd download attempt $$i failed, retrying..."; sleep 10; \
-        done \
-        && chmod +x /usr/local/bin/confd; \
+        true; \
     fi \
 \
     # Clean up all useless packages and some files
