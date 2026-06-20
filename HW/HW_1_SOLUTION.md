@@ -1,8 +1,37 @@
 # Practice HW1 — Нагрузочное тестирование demo-app-1
 
+---
+
+## 🔴 КУДА ВСТАВЛЯТЬ РЕЗУЛЬТАТЫ И КУДА СДАВАТЬ
+
+### Куда **вставить** результаты (внутри этого файла)
+
+| Что вставить | Раздел в этом файле | Как |
+|--------------|---------------------|-----|
+| Дата прогона | **Строка 20** ниже | Замени красный текст |
+| Цифры RPS, latency, errors | **§ 4.1** — таблица | Замени красные ячейки |
+| Скриншоты Grafana (Шторм) | **§ 4.2** | Вставь картинки вместо красных блоков |
+| Скриншоты + вывод (Волна) | **§ 4.3** | То же |
+| Скриншоты + вывод (Read-heavy) | **§ 4.4** | То же |
+
+**Скриншоты сохрани в:** `HW\screenshots\`  
+**В отчёте вставь так:** `![описание](screenshots/storm-k6.png)`
+
+### Куда **сдать** готовый файл
+
+| Куда | Что отправить |
+|------|---------------|
+| **Telegram @nikolaysavelev** | Файл `HW\HW_1_SOLUTION.md` |
+| **Telegram (опционально)** | Папку `HW\screenshots\` или скриншоты отдельными файлами |
+
+> <span style="color:red; font-weight:bold;">Все места ниже с красным текстом «ЗАПОЛНИ» / «ВСТАВЬ» — замени на свои данные после прогона на Windows.</span>
+
+---
+
 **Автор:** Аягжов  
-**Проект:** `code/demo-app-1`  
-**Дата прогона:** _[заполни после запуска на другом компе]_
+**Проект:** `code\demo-app-1`  
+**ОС:** Windows (PowerShell)  
+**Дата прогона:** <span style="color:red; font-weight:bold;">ЗАПОЛНИ: например 20.06.2026</span>
 
 ---
 
@@ -109,8 +138,8 @@ Browser → Nginx :8080 → Backend Go :8081 → PostgreSQL :5432
 **Профиль:** 0 → 1000 VU за 10s, держим 1 min, сброс 30s  
 **Распределение:** 80% POST `/api/orders`, 20% GET `/api/orders`
 
-```bash
-cd code/demo-app-1
+```powershell
+cd code\demo-app-1
 docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/storm.js
 ```
 
@@ -121,7 +150,7 @@ docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/storm.j
 **Скрипт:** `k6/scripts/wave.js`  
 **Профиль:** 0 → 500 VU за 2 min, плато 2 min, сброс 1 min
 
-```bash
+```powershell
 docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/wave.js
 ```
 
@@ -133,13 +162,13 @@ docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/wave.js
 **Фишка:** 95% GET / 5% POST — противоположность дефолтному скрипту.  
 Показывает, что bottleneck зависит от профиля: write → БД, read → backend/сеть.
 
-```bash
+```powershell
 docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/read-heavy.js
 ```
 
 ### 3.4. Базовый сценарий (оригинал)
 
-```bash
+```powershell
 docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/load-script.js
 ```
 
@@ -147,15 +176,19 @@ docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/load-sc
 
 ## 4. Этап №3 — Анализ результатов
 
+> <span style="color:red; font-weight:bold;">▼▼▼ ГЛАВНЫЙ РАЗДЕЛ ДЛЯ ТВОИХ РЕЗУЛЬТАТОВ — заполни после k6 и Grafana ▼▼▼</span>
+
 > **Инструкция:** после каждого прогона открой Grafana (http://localhost:3000), выбери временной диапазон теста, сделай скриншоты и заполни таблицы ниже.
 
-### 4.1. Сводная таблица (заполни)
+### 4.1. Сводная таблица — <span style="color:red; font-weight:bold;">ЗАПОЛНИ ЦИФРАМИ ИЗ K6 / GRAFANA</span>
 
 | Сценарий | Peak VU | RPS (peak) | p95 latency | Error rate | Главный bottleneck |
 |----------|---------|------------|-------------|------------|-------------------|
-| Шторм | _1000_ | _[ ]_ | _[ ] ms_ | _[ ]%_ | _[ ]_ |
-| Волна | _500_ | _[ ]_ | _[ ] ms_ | _[ ]%_ | _[ ]_ |
-| Read-heavy | _400_ | _[ ]_ | _[ ] ms_ | _[ ]%_ | _[ ]_ |
+| Шторм | 1000 | <span style="color:red;">ЗАПОЛНИ</span> | <span style="color:red;">ЗАПОЛНИ ms</span> | <span style="color:red;">ЗАПОЛНИ %</span> | <span style="color:red;">ЗАПОЛНИ (напр. PostgreSQL)</span> |
+| Волна | 500 | <span style="color:red;">ЗАПОЛНИ</span> | <span style="color:red;">ЗАПОЛНИ ms</span> | <span style="color:red;">ЗАПОЛНИ %</span> | <span style="color:red;">ЗАПОЛНИ</span> |
+| Read-heavy | 400 | <span style="color:red;">ЗАПОЛНИ</span> | <span style="color:red;">ЗАПОЛНИ ms</span> | <span style="color:red;">ЗАПОЛНИ %</span> | <span style="color:red;">ЗАПОЛНИ</span> |
+
+*Цифры бери из конца вывода k6 в PowerShell (`http_req_duration`, `http_req_failed`) или из Grafana.*
 
 ### 4.2. Шторм — инсайты
 
@@ -167,13 +200,22 @@ docker compose run --rm k6 run --out experimental-prometheus-rw /scripts/load-sc
 - CPU backend container: 80–100%
 - После сброса VU (30s ramp-down): latency возвращается к baseline за 1–2 min
 
-**Скриншоты:**
-- _[ВСТАВЬ: k6 Prometheus dashboard — latency + VUs]_
-- _[ВСТАВЬ: Postgres Overview — connections + transactions]_
-- _[ВСТАВЬ: cAdvisor — backend CPU]_
+**Скриншоты — <span style="color:red; font-weight:bold;">ВСТАВЬ СЮДА (§ 4.2)</span>:**
 
-**Вывод:**  
-_[Заполни: например «При 1000 VU за 10s PostgreSQL исчерпал connections, backend начал отдавать 500. Система восстановилась через ~90s после снижения нагрузки»]_
+<!-- ВСТАВЬ: k6 dashboard -->
+<span style="color:red; font-weight:bold;">ВСТАВЬ СКРИНШОТ: k6 Prometheus — latency + VUs</span>
+`![Шторм k6](screenshots/storm-k6.png)`
+
+<!-- ВСТАВЬ: Postgres -->
+<span style="color:red; font-weight:bold;">ВСТАВЬ СКРИНШОТ: Postgres Overview — connections</span>
+`![Шторм Postgres](screenshots/storm-postgres.png)`
+
+<!-- ВСТАВЬ: CPU -->
+<span style="color:red; font-weight:bold;">ВСТАВЬ СКРИНШОТ: cAdvisor — backend CPU</span>
+`![Шторм CPU](screenshots/storm-cpu.png)`
+
+**Вывод — <span style="color:red; font-weight:bold;">ЗАПОЛНИ СВОИМИ СЛОВАМИ (§ 4.2)</span>:**  
+<span style="color:red;">ЗАПОЛНИ: что увидел на графиках при шторме. Пример: «При 1000 VU PostgreSQL исчерпал connections, backend отдавал 500, восстановление ~90 сек».</span>
 
 ### 4.3. Волна — инсайты
 
@@ -183,11 +225,12 @@ _[Заполни: например «При 1000 VU за 10s PostgreSQL исче
 - RPS ≈ линейно с VU до «полки» (CPU или DB)
 - p95 latency: постепенный рост, не обрыв
 
-**Скриншоты:**
-- _[ВСТАВЬ: Grafana — RPS over time]_
+**Скриншот — <span style="color:red; font-weight:bold;">ВСТАВЬ СЮДА (§ 4.3)</span>:**  
+<span style="color:red; font-weight:bold;">ВСТАВЬ СКРИНШОТ: Grafana — RPS over time (Волна)</span>
+`![Волна RPS](screenshots/wave-rps.png)`
 
-**Вывод:**  
-_[Заполни]_
+**Вывод — <span style="color:red; font-weight:bold;">ЗАПОЛНИ (§ 4.3)</span>:**  
+<span style="color:red;">ЗАПОЛНИ: что видел при плавном нарастании нагрузки.</span>
 
 ### 4.4. Read-heavy — инсайты
 
@@ -205,8 +248,12 @@ _[Заполни]_
 | DB connections | выше | ниже |
 | Error rate при пике | выше | ниже |
 
-**Вывод:**  
-_[Заполни: «Подтвердил гипотезу — bottleneck смещается в зависимости от профиля нагрузки»]_
+**Скриншот — <span style="color:red; font-weight:bold;">ВСТАВЬ СЮДА (§ 4.4)</span>:**  
+<span style="color:red; font-weight:bold;">ВСТАВЬ СКРИНШОТ: Read-heavy — latency / RPS</span>
+`![Read-heavy](screenshots/read-heavy.png)`
+
+**Вывод — <span style="color:red; font-weight:bold;">ЗАПОЛНИ (§ 4.4)</span>:**  
+<span style="color:red;">ЗАПОЛНИ: сравни read-heavy с write-heavy, подтверди или опровергни гипотезу.</span>
 
 ---
 
@@ -248,7 +295,7 @@ _[Заполни: «Подтвердил гипотезу — bottleneck сме�
 
 ### 5.5. HAProxy — горизонтальное масштабирование
 
-```bash
+```powershell
 docker compose -f docker-compose-lb.yaml up -d --build
 ```
 

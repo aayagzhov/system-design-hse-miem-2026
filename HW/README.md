@@ -10,14 +10,14 @@
 | [HW2.md](./HW2.md) | SD — HLD, БД, инфраструктура | ✅ Готово | Telegram @nikolaysavelev |
 | [HW_1_SOLUTION.md](./HW_1_SOLUTION.md) | Practice — нагрузочное тестирование | ⚠️ Нужны скриншоты и цифры | Telegram |
 | [HW2_PRACTICE_SOLUTION.md](./HW2_PRACTICE_SOLUTION.md) | Practice — Patroni HA кластер | ⚠️ Нужны скриншоты | Telegram |
-| [PRACTICE_INSTRUCTIONS.md](./PRACTICE_INSTRUCTIONS.md) | **Инструкция по практике** | — | Читай перед запуском Docker |
+| [PRACTICE_INSTRUCTIONS.md](./PRACTICE_INSTRUCTIONS.md) | **Инструкция по практике (Windows)** | — | Читай перед запуском Docker |
 
 ## Важно про сдачу SD HW1
 
-Преподаватель просит положить отчёт в папку `2/`. Перед PR скопируй:
+Преподаватель просит положить отчёт в папку `2/`. Перед PR скопируй (PowerShell):
 
-```bash
-cp HW/HW1.md 2/HW1.md
+```powershell
+Copy-Item HW\HW1.md 2\HW1.md
 ```
 
 ## Практика
