@@ -11,7 +11,7 @@ SD-отчёты уже готовы в папке `HW/` — здесь толь�
 
 | # | Задача | Время | Результат |
 |---|--------|-------|-----------|
-| 1 | Practice HW1: demo-app-1 + 3 теста k6 | ~2 ч | `HW_1_SOLUTION.md` + скриншоты |
+| 1 | Practice HW1: demo-app-1 + 3 теста k6 | ~2 ч | `HW1_PRACTICE_SOLUTION.md` + скриншоты |
 | 2 | Practice HW2: Patroni-кластер + chaos-тесты | ~2 ч | `HW2_PRACTICE_SOLUTION.md` + скриншоты |
 | 3 | Отправить файлы в Telegram @nikolaysavelev | 5 мин | — |
 
@@ -52,7 +52,7 @@ pip install psycopg2-binary
 # Practice HW1 — Нагрузочное тестирование
 
 **Проект:** `code\demo-app-1`  
-**Отчёт:** `HW\HW_1_SOLUTION.md`
+**Отчёт:** `HW\HW1_PRACTICE_SOLUTION.md`
 
 ## Шаг 1. Запуск
 
@@ -142,7 +142,7 @@ mkdir screenshots -ErrorAction SilentlyContinue
 
 ## Шаг 6. Заполни отчёт
 
-Открой `HW\HW_1_SOLUTION.md` — таблица 4.1, скриншоты, выводы.
+Открой `HW\HW1_PRACTICE_SOLUTION.md` — таблица 4.1, скриншоты, выводы.
 
 ## Шаг 7. Остановка
 
@@ -260,7 +260,7 @@ docker compose down
 
 Telegram **@nikolaysavelev**:
 
-1. `HW\HW_1_SOLUTION.md` (+ скриншоты)
+1. `HW\HW1_PRACTICE_SOLUTION.md` (+ скриншоты)
 2. `HW\HW2_PRACTICE_SOLUTION.md` (+ скриншоты)
 
 SD (без Docker):
@@ -297,7 +297,7 @@ Copy-Item HW\HW1.md 2\HW1.md
 - [ ] Grafana настроена
 - [ ] 3 прогона k6
 - [ ] Скриншоты в `HW\screenshots\`
-- [ ] `HW_1_SOLUTION.md` отправлен
+- [ ] `HW1_PRACTICE_SOLUTION.md` отправлен
 
 **Practice HW2:**
 - [ ] `docker build -t patroni .`

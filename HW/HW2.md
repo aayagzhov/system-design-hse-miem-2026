@@ -7,15 +7,6 @@
 
 ---
 
-## Содержание
-
-1. [Part 1 — Декомпозиция на сервисы и интеграции](#part-1--декомпозиция-на-сервисы-и-интеграции)
-2. [Part 2 — Выбор баз данных](#part-2--выбор-баз-данных)
-3. [Part 3 — Инфраструктурные компоненты (MUST / SHOULD)](#part-3--инфраструктурные-компоненты-must--should)
-4. [Итоговая схема HLD](#итоговая-схема-hld)
-
----
-
 ## Part 1 — Декомпозиция на сервисы и интеграции
 
 ### 1.1. Подход к декомпозиции
@@ -478,20 +469,3 @@ flowchart TB
     svc -.-> OTEL
     GW -.-> MESH
 ```
-
----
-
-## Итоги
-
-| Аспект | Решение |
-|--------|---------|
-| **Стиль** | Микросервисы (8 сервисов), DDD bounded contexts |
-| **Sync интеграции** | Client → GW → Services (REST), Auth token check |
-| **Async интеграции** | Kafka: модерация, индексация, уведомления |
-| **Главные БД** | PostgreSQL (OLTP), OpenSearch (search), Redis (cache), S3 (media) |
-| **Репликация** | PG: leader + 2 async replica; Kafka RF=3; Redis cluster |
-| **Шардирование** | PG: 16 шардов по seller_id; партиционирование listings по месяцу |
-| **MUST** | LB, CDN, Redis, IdP, WAF, CI/CD, Observability, Backup, Kafka, API GW |
-| **SHOULD** | Service Mesh, Geo DNS, Feature Flags, BFF, DLQ |
-
-Документ готов для защиты SDD и дальнейшей детализации (LLD, ADR, RFC).
