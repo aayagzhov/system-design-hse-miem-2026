@@ -1,78 +1,82 @@
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build --build-arg PG_MAJOR=15 -t patroni .
-[+] Building 189.4s (16/16) FINISHED                                                                                                        docker:desktop-linux
+ C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build --build-arg PG_MAJOR=15 -t patroni .
+[+] Building 172.3s (16/16) FINISHED                                                                                                        docker:desktop-linux
  => [internal] load build definition from Dockerfile                                                                                                        0.0s
- => => transferring dockerfile: 8.44kB                                                                                                                      0.0s
+ => => transferring dockerfile: 9.00kB                                                                                                                      0.0s
  => WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)                                                                             0.0s
  => [internal] load metadata for docker.io/library/postgres:15                                                                                              0.1s
  => [internal] load .dockerignore                                                                                                                           0.0s
  => => transferring context: 2B                                                                                                                             0.0s
+ => CACHED [builder 1/3] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                         0.1s
+ => => resolve docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                        0.1s
  => [internal] load build context                                                                                                                           0.1s
  => => transferring context: 3.48kB                                                                                                                         0.0s
- => [builder 1/3] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                0.9s
- => => resolve docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                        0.1s
- => [builder 2/3] RUN set -ex     && export DEBIAN_FRONTEND=noninteractive     && echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > /etc  126.6s
- => [builder 3/3] RUN if [ "false" = "true" ]; then         set -ex         && echo 'postgres ALL=(ALL) NOPASSWD: /bin/tar xpJf /a.tar.xz -C /, /bin/rm /a  0.7s 
- => [stage-1 1/8] COPY --from=builder / /                                                                                                                   6.3s 
- => [stage-1 2/8] COPY patroni /patroni/                                                                                                                    1.4s 
+ => [builder 2/3] RUN set -ex     && export DEBIAN_FRONTEND=noninteractive     && echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > /etc  115.1s
+ => [builder 3/3] RUN if [ "false" = "true" ]; then         set -ex         && echo 'postgres ALL=(ALL) NOPASSWD: /bin/tar xpJf /a.tar.xz -C /, /bin/rm /a  0.0s 
+ => [stage-1 1/8] COPY --from=builder / /                                                                                                                   6.6s 
+ => [stage-1 2/8] COPY patroni /patroni/                                                                                                                    1.3s 
  => [stage-1 3/8] COPY extras/confd/conf.d/haproxy.toml /etc/confd/conf.d/                                                                                  0.1s 
  => [stage-1 4/8] COPY extras/confd/templates/haproxy.tmpl /etc/confd/templates/                                                                            0.1s
  => [stage-1 5/8] COPY patroni*.py docker/entrypoint.sh /                                                                                                   0.1s
  => [stage-1 6/8] COPY postgres?.yml /home/postgres/                                                                                                        0.1s
  => [stage-1 7/8] WORKDIR /home/postgres                                                                                                                    0.1s
  => [stage-1 8/8] RUN sed -i 's/env python/&3/' /patroni*.py     && sed -i 's/^  listen: 127.0.0.1/  listen: 0.0.0.0/' postgres?.yml     && sed -i "s|^\(   0.6s
- => exporting to image                                                                                                                                     43.8s
- => => exporting layers                                                                                                                                    34.2s
- => => exporting manifest sha256:b70312c6052db3e1eb502f065521797fe7baeea9bf8487d0aef003891c732f01                                                           0.0s
- => => exporting config sha256:5c84ff5fc08aabba3d9d6836ade6727a466f6e07d7bc6ddb0d9d8aa2f06b6abc                                                             0.0s
- => => exporting attestation manifest sha256:799911d52be3177350c4946fa6e25552114df84eaf6cd0ebbf45a2f2b035e0f7                                               0.1s
- => => exporting manifest list sha256:8549918d84128a572ab49b80323ca293a31aaeeca6d851ee8dfe89b80b46de52                                                      0.0s
+ => exporting to image                                                                                                                                     41.1s
+ => => exporting layers                                                                                                                                    30.1s
+ => => exporting manifest sha256:fed0c30afcaa9fb0db09772a71b308ac11d117725a720d97eb5fdb50c4e74600                                                           0.0s
+ => => exporting config sha256:b0c9bfc70f515d8f5a50a672bbc42b53a9c9b7b174d409e053cae72960fedd4d                                                             0.0s
+ => => exporting attestation manifest sha256:8d846442aed42cccad6c48bb67c77c0e696ce614899638e85c1da0ac3c6b8d37                                               0.1s
+ => => exporting manifest list sha256:ad4e98080da87560f63acb89f4335463c077127d30004ba588cf69f9f02c58b0                                                      0.0s
  => => naming to docker.io/library/patroni:latest                                                                                                           0.0s
- => => unpacking to docker.io/library/patroni:latest                                                                                                        9.2s
+ => => unpacking to docker.io/library/patroni:latest                                                                                                       10.8s
 
  1 warning found (use docker --debug to expand):
  - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> cd ..
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker compose up -d
-time="2026-06-20T11:30:02+03:00" level=warning msg="C:\\Users\\User\\CppProjects\\system-design-hse-miem-2026\\code\\postgres-ha\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
-[+] Running 13/13
- ✔ Network postgres-ha_demo                   Created                                                                                                       0.1s 
- ✔ Volume postgres-ha_grafana_data            Created                                                                                                       0.0s 
- ✔ Volume postgres-ha_prometheus_data         Created                                                                                                       0.0s 
- ✔ Container demo-patroni2                    Started                                                                                                       2.5s 
- ✔ Container demo-etcd2                       Started                                                                                                       2.5s 
- ✔ Container demo-haproxy                     Started                                                                                                       3.3s 
- ✔ Container postgres-ha-postgres_exporter-1  Started                                                                                                       1.8s 
- ✔ Container demo-patroni1                    Started                                                                                                       1.6s 
- ✔ Container demo-etcd3                       Started                                                                                                       1.7s 
- ✔ Container postgres-ha-prometheus-1         Started                                                                                                       3.3s 
- ✔ Container demo-etcd1                       Started                                                                                                       2.7s 
- ✔ Container demo-patroni3                    Started                                                                                                       2.9s 
- ✔ Container postgres-ha-grafana-1            Started                                                                                                       3.0s 
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-NAMES                             STATUS          PORTS
-postgres-ha-grafana-1             Up 10 seconds   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
-postgres-ha-prometheus-1          Up 12 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
-postgres-ha-postgres_exporter-1   Up 12 seconds   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 patronictl list
-Error response from daemon: container 32afbfc1c8ae0aad78ee5e142c87d57795028c5dbdd21198daae1a06c2649ba3 is not running
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:76
++ ... ѕРј РјР°Р»РµРЅСЊРєРёР№ ($size bytes) вЂ” СЃРєР°С‡РёРІР°РЅРёРµ РѕР±РѕС ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+Непредвиденная лексема "СЃРєР°С‡РёРІР°РЅРёРµ" в выражении или операторе.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:165
++ ... РѕСЂРІР°Р»РѕСЃСЊ. РџРѕРїСЂРѕР±СѓР№ VPN РёР»Рё РґСЂСѓРіСѓСЋ СЃРµС‚СЊ."
++                                                                     ~~~~~
+В строке отсутствует завершающий символ: '.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:19 знак:24
++ if ($size -lt 1000000) {
++                        ~
+Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
+    + CategoryInfo          : ParserError: (:) [], ParseException
+    + FullyQualifiedErrorId : UnexpectedToken
+ 
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:76
++ ... ѕРј РјР°Р»РµРЅСЊРєРёР№ ($size bytes) вЂ” СЃРєР°С‡РёРІР°РЅРёРµ РѕР±РѕС ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+Непредвиденная лексема "СЃРєР°С‡РёРІР°РЅРёРµ" в выражении или операторе.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:165
++ ... РѕСЂРІР°Р»РѕСЃСЊ. РџРѕРїСЂРѕР±СѓР№ VPN РёР»Рё РґСЂСѓРіСѓСЋ СЃРµС‚СЊ."
++                                                                     ~~~~~
+В строке отсутствует завершающий символ: '.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:19 знак:24
++ if ($size -lt 1000000) {
++                        ~
+Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
+    + CategoryInfo          : ParserError: (:) [], ParseException
+    + FullyQualifiedErrorId : UnexpectedToken
+ 
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:76
++ ... ѕРј РјР°Р»РµРЅСЊРєРёР№ ($size bytes) вЂ” СЃРєР°С‡РёРІР°РЅРёРµ РѕР±РѕС ...
++                                              ~~~~~~~~~~~~~~~~~~~~
+Непредвиденная лексема "СЃРєР°С‡РёРІР°РЅРёРµ" в выражении или операторе.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:165
++ ... РѕСЂРІР°Р»РѕСЃСЊ. РџРѕРїСЂРѕР±СѓР№ VPN РёР»Рё РґСЂСѓРіСѓСЋ СЃРµС‚СЊ."
++                                                                     ~~~~~
+В строке отсутствует завершающий символ: '.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:19 знак:24
++ if ($size -lt 1000000) {
++                        ~
+Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
+    + CategoryInfo          : ParserError: (:) [], ParseException
+    + FullyQualifiedErrorId : UnexpectedToken
+ 
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> c
