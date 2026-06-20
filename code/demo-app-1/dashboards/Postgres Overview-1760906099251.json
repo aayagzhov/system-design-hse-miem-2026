@@ -37,8 +37,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "prometheus",
-        "uid": "KmvkIqeNz"
+        "type": "prometheus"
       },
       "editable": true,
       "error": false,
@@ -386,8 +385,7 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "KmvkIqeNz"
+        "type": "prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -512,8 +510,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "prometheus",
-        "uid": "KmvkIqeNz"
+        "type": "prometheus"
       },
       "decimals": 1,
       "editable": true,
@@ -858,8 +855,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "prometheus",
-        "uid": "KmvkIqeNz"
+        "type": "prometheus"
       },
       "editable": true,
       "error": false,
@@ -1044,8 +1040,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "prometheus",
-        "uid": "KmvkIqeNz"
+        "type": "prometheus"
       },
       "editable": true,
       "error": false,
@@ -1133,8 +1128,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "type": "prometheus",
-        "uid": "KmvkIqeNz"
+        "type": "prometheus"
       },
       "editable": true,
       "error": false,
@@ -1233,8 +1227,7 @@
           "value": "$__all"
         },
         "datasource": {
-          "type": "prometheus",
-          "uid": "KmvkIqeNz"
+          "type": "prometheus"
         },
         "definition": "",
         "hide": 0,
@@ -1263,8 +1256,7 @@
           "value": "$__all"
         },
         "datasource": {
-          "type": "prometheus",
-          "uid": "KmvkIqeNz"
+          "type": "prometheus"
         },
         "definition": "",
         "hide": 0,
