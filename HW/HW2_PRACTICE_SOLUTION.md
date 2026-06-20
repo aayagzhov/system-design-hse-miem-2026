@@ -14,7 +14,7 @@
 ```
                     ┌─────────────┐
                     │   Client    │
-                    │ (psql/DBeaver│
+                    │ (psql /     │
                     │  traffic-gen)│
                     └──────┬──────┘
                            │
@@ -85,7 +85,9 @@ docker exec demo-patroni1 patronictl list
 
 ## 3. HAProxy Dashboard
 
-http://localhost:7001/
+```powershell
+Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing | Select-Object StatusCode
+```
 
 ![HAProxy stats](screenshots/haproxy-stats.png)
 
@@ -117,15 +119,26 @@ Port: 5002
 
 ### 4.3. SQL
 
-Выполнил скрипт из `hw2_practice.md` (таблицы `owners`, `events`, индексы, INSERT).
+Скрипт: `code\postgres-ha\init-schema.sql`
 
-```sql
--- На master (5001)
-SELECT count(*) FROM events;
+Пролив на master через терминал:
 
--- На replica (5002)
-SELECT count(*) FROM events;
+```powershell
+cd code\postgres-ha
+Get-Content init-schema.sql | docker exec -i demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres
 ```
+
+Проверка репликации:
+
+```powershell
+docker exec demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) FROM events;"
+docker exec demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT count(*) FROM events;"
+```
+
+| Где | count(*) |
+|-----|----------|
+| Master (5001) | |
+| Replica (5002) | |
 
 ---
 
