@@ -181,6 +181,26 @@ cd C:\Users\ТВОЙ_ЮЗЕР\Study\system-design-hse-miem-2026\code\postgres-ha
 docker build --build-arg PG_MAJOR=15 -t patroni .
 ```
 
+Если падает на **etcd/confd** (`gzip: unexpected end of file` — GitHub оборвал скачивание):
+
+**Вариант A — повторить build** (в Dockerfile добавлены retry, подтяни свежий код):
+
+```powershell
+git pull
+docker build --build-arg PG_MAJOR=15 -t patroni .
+```
+
+**Вариант B — офлайн-сборка** (скачать на Windows, потом build без GitHub):
+
+```powershell
+.\download-deps.ps1
+docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
+```
+
+Если `download-deps.ps1` тоже падает — включи VPN или скачай в браузере:
+- https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz → `vendor\etcd.tar.gz`
+- https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 → `vendor\confd`
+
 Иначе:
 
 ```powershell
@@ -535,6 +555,7 @@ Copy-Item HW\HW1.md 2\HW1.md
 | Порт 5001/5002 недоступен | `docker ps` — haproxy Up? Подожди 90 сек после `compose up` |
 | `psql` connection refused | Подключайся через `haproxy`, не напрямую в patroni: `-h haproxy -p 5001` |
 | `docker build` timeout | `docker build --build-arg PG_MAJOR=15 -t patroni .` |
+| `gzip: unexpected end of file` при build | GitHub оборвал etcd: `.\download-deps.ps1` затем `docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .` |
 | Путь с пробелами | Возьми путь в кавычки: `cd "C:\Users\Имя\My Projects\..."` |
 
 ---
