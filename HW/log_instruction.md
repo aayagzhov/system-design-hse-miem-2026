@@ -1,104 +1,33 @@
-# Сбор логов кластера (Windows → Mac)
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> .\fix-and-rebuild.ps1
+0/8 git pull
+Already up to date.
+1/8 git config core.autocrlf false
+2/8 fix entrypoint.sh CRLF -> LF
+Fixed: patroni-master\docker\entrypoint.sh
+Done. Rebuild: cd patroni-master; docker build --build-arg PG_MAJOR=15 -t patroni .
+   hex: 23 21 2F 62 69 6E 2F 73 68 0A 0A 69 66 20 5B 20
+   OK: LF line endings
+3/8 vendor deps for offline build
+   downloading etcd + confd on Windows...
+Downloading C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor\etcd.tar.gz ...
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0           00:22              0
+curl: (35) Recv failure: Connection was reset
+   download failed: Download failed: https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz (curl exit 35). Try VPN, mobile hotspot, or download in browser.
 
-Скрипт: `code/postgres-ha/collect-cluster-debug.ps1`  
-Результат: `HW/cluster-debug.txt`
-
-## 1. Подтянуть репозиторий (Windows)
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026
-git pull
-```
-
-## 2. Собрать логи
-
-```powershell
-cd code\postgres-ha
-.\collect-cluster-debug.ps1
-```
-
-Должно вывести: `OK: ...\HW\cluster-debug.txt`
-
-## 3. Закоммить и отправить
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026
-git add HW/cluster-debug.txt
-git commit -m "debug: patroni cluster logs"
-git push
-```
-
-## 4. На Mac
-
-```bash
-git pull
-```
-
-Прислать в чат: `@HW/cluster-debug.txt`
-
----
-
-## Если контейнеров уже нет
-
-Сначала поднять кластер, подождать, потом скрипт:
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
-docker compose up -d
-Start-Sleep -Seconds 30
-.\collect-cluster-debug.ps1
-```
-
----
-
-## Что попадает в cluster-debug.txt
-
-- `docker ps -a` — все контейнеры и статусы
-- логи `demo-patroni1/2/3`, `demo-etcd1/2/3`, `demo-haproxy`
-- exit code patroni1
-- hex-дамп `entrypoint.sh` (CRLF vs LF)
-- образ `patroni`, `git core.autocrlf`
-
----
-
-## Известная проблема (контекст)
-
-- `docker build` — OK
-- `docker compose up` — Started, но patroni/etcd/haproxy сразу падают
-- в `docker ps` только grafana, prometheus, postgres_exporter
-- `docker exec demo-patroni1 patronictl list` → `container is not running`
-
-Частая причина на Windows: CRLF в `entrypoint.sh` → см. раздел **Исправление** ниже.
-
----
-
-## Исправление CRLF (если в логах `entrypoint.sh: Syntax error`)
-
-**Важно:** после `--no-cache` обычный Dockerfile качает etcd с GitHub **внутри** Docker — у тебя это падает с `TLS connect error`. Используй offline-сборку.
-
-### Шаг A — скачать etcd + confd на Windows (браузер или VPN)
-
-Положить в `code\postgres-ha\patroni-master\vendor\`:
-
-| Файл | URL |
-|------|-----|
-| `etcd.tar.gz` | https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz |
-| `confd` (без расширения) | https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 |
-
-Или:
-
-```powershell
-cd code\postgres-ha\patroni-master
-.\download-deps.ps1
-dir vendor
-```
-
-## Одна команда (Windows)
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha; .\fix-and-rebuild.ps1
-```
-
-Скрипт сам: `git pull` → LF → скачать vendor → offline build → `compose up` → `patronictl list`.
-
-Если на шаге vendor curl упадёт — **один раз** скачай в браузере в `patroni-master\vendor\` (см. таблицу ниже) и запусти **ту же команду** снова.
+   Download in browser and save to patroni-master\vendor\ :
+   etcd:  https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
+          -> vendor\etcd.tar.gz
+   confd: https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64
+          -> vendor\confd   (no extension!)
+vendor files missing. Use VPN or browser download, then run again.
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\fix-and-rebuild.ps1:49 знак:9
++         throw "vendor files missing. Use VPN or browser download, the ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (vendor files mi...then run again.:String) [], RuntimeException
+    + FullyQualifiedErrorId : vendor files missing. Use VPN or browser download, then run again.
+ 
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 
