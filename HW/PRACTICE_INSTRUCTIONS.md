@@ -280,6 +280,12 @@ docker exec demo-patroni1 python3 /patronictl.py list
 
 Пример (у тебя сейчас): **patroni1 = Leader**, patroni2 и patroni3 = Replica.
 
+Папка для отчёта (один раз):
+
+```powershell
+New-Item -ItemType Directory -Force -Path ..\..\HW\screenshots
+```
+
 Сохрани вывод в файл (для отчёта §2):
 
 ```powershell
@@ -314,6 +320,14 @@ docker exec demo-patroni1 patronictl list
 
 ## Шаг 4. HAProxy stats (без браузера)
 
+Сначала создай папку для артефактов (из `code\postgres-ha`):
+
+```powershell
+New-Item -ItemType Directory -Force -Path ..\..\HW\screenshots
+```
+
+Проверка stats (должен быть `StatusCode 200`):
+
 ```powershell
 Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing | Select-Object StatusCode, Content
 ```
@@ -321,10 +335,10 @@ Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing | Select-Object S
 Сохранить страницу в файл:
 
 ```powershell
-Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing -OutFile ..\..\..\HW\screenshots\haproxy-stats.html
+Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing -OutFile ..\..\HW\screenshots\haproxy-stats.html
 ```
 
-Открой `haproxy-stats.html` в браузере только если нужен скриншот. В отчёт §3 — вывод или скрин.
+Открой `HW\screenshots\haproxy-stats.html` в браузере только если нужен скриншот. В отчёт §3 — вывод или скрин.
 
 Кратко посмотреть, кто UP:
 
