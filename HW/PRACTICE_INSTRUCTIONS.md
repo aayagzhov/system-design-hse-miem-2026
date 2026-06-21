@@ -352,10 +352,12 @@ Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing -OutFile ..\..\HW
 
 `psql` уже есть внутри контейнеров Patroni. Подключение идёт через **HAProxy** внутри docker-сети:
 
-| Роль | Внутри сети | С хоста (Windows) |
-|------|-------------|-------------------|
-| **Master (write)** | `haproxy:5001` | `localhost:5001` |
-| **Replica (read)** | `haproxy:5000` | `localhost:5002` |
+| Роль | Внутри docker-сети (`-h haproxy`) | С хоста Windows (`localhost`) |
+|------|-----------------------------------|-------------------------------|
+| **Master (write)** | `haproxy:5000` | `localhost:5002` |
+| **Replica (read)** | `haproxy:5001` | `localhost:5001` |
+
+> В `haproxy.tmpl`: `listen primary` → порт **5000**, `listen replicas` → порт **5001**. Не путать с маппингом портов на хосте.
 
 Логин: `postgres` / `postgres`
 
@@ -366,7 +368,7 @@ Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing -OutFile ..\..\HW
 Оставайся в `code\postgres-ha`:
 
 ```powershell
-Get-Content init-schema.sql | docker exec -i -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres
+Get-Content init-schema.sql | docker exec -i -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres
 ```
 
 Должно пройти без ERROR. В конце — `CREATE TABLE`, `INSERT 0 3`, `INSERT 0 2`.
@@ -374,9 +376,9 @@ Get-Content init-schema.sql | docker exec -i -e PGPASSWORD=postgres demo-patroni
 ### 5.2. Проверить данные на master
 
 ```powershell
-docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) AS events_on_master FROM events;"
-docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT * FROM owners;"
-docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT * FROM events ORDER BY id;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT count(*) AS events_on_master FROM events;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT * FROM owners;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT * FROM events ORDER BY id;"
 ```
 
 Ожидаешь: **2** события, **3** владельца.
@@ -384,8 +386,8 @@ docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 
 ### 5.3. Проверить репликацию на replica
 
 ```powershell
-docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT count(*) AS events_on_replica FROM events;"
-docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT * FROM events ORDER BY id;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) AS events_on_replica FROM events;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT * FROM events ORDER BY id;"
 ```
 
 Число на replica должно **совпасть** с master (**2**).
@@ -395,7 +397,7 @@ docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 
 Master:
 
 ```powershell
-docker exec -it -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres
+docker exec -it -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres
 ```
 
 Внутри psql:
@@ -409,22 +411,22 @@ SELECT count(*) FROM events;
 Replica:
 
 ```powershell
-docker exec -it -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres
+docker exec -it -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres
 ```
 
 ### 5.5. Альтернатива: psql с хоста (если установлен PostgreSQL client)
 
 ```powershell
 $env:PGPASSWORD = "postgres"
-psql -h localhost -p 5001 -U postgres -d postgres -c "SELECT count(*) FROM events;"
 psql -h localhost -p 5002 -U postgres -d postgres -c "SELECT count(*) FROM events;"
+psql -h localhost -p 5001 -U postgres -d postgres -c "SELECT count(*) FROM events;"
 ```
 
 ### 5.6. Альтернатива: одноразовый контейнер-клиент
 
 ```powershell
-docker run --rm -e PGPASSWORD=postgres postgres:15 psql -h host.docker.internal -p 5001 -U postgres -d postgres -c "SELECT count(*) FROM events;"
 docker run --rm -e PGPASSWORD=postgres postgres:15 psql -h host.docker.internal -p 5002 -U postgres -d postgres -c "SELECT count(*) FROM events;"
+docker run --rm -e PGPASSWORD=postgres postgres:15 psql -h host.docker.internal -p 5001 -U postgres -d postgres -c "SELECT count(*) FROM events;"
 ```
 
 Запиши цифры `count(*)` master и replica в отчёт §4.3.
@@ -448,8 +450,8 @@ python traffic-generator.py
 Проверить рост данных **Окно 1** (пока generator работает):
 
 ```powershell
-docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) FROM events;"
 docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT count(*) FROM events;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) FROM events;"
 ```
 
 ---
@@ -660,8 +662,9 @@ Copy-Item HW\HW1.md 2\HW1.md
 | `python` не найден | Установи Python с галочкой PATH, или `py -m pip install psycopg2-binary` |
 | Grafana пустая | Datasource = `http://prometheus:9090` |
 | Порт 5001/5002 недоступен | `docker ps` — haproxy Up? Подожди 90 сек после `compose up` |
+| `read-only transaction` при CREATE TABLE | Подключился к **replica** (порт 5001 внутри сети) | Master = `haproxy:5000`, replica = `haproxy:5001` |
 | `psql` password authentication failed | Нет пароля в неинтерактивном режиме | Добавь `-e PGPASSWORD=postgres` к `docker exec` |
-| `psql` connection refused | Подключайся через `haproxy`, не напрямую в patroni: `-h haproxy -p 5001` |
+| `psql` connection refused | Подключайся через `haproxy`, не напрямую в patroni: master `-h haproxy -p 5000` |
 | `docker build` timeout | `docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .` |
 | `gzip: unexpected end of file` / `TLS connect error` | GitHub в Docker: offline build + `vendor\` (шаг 1 HW2) |
 | `entrypoint.sh: Syntax error` / `Exited (2)` | `code\postgres-ha\fix-and-rebuild.ps1` |

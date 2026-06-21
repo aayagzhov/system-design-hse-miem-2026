@@ -1,4 +1,4 @@
--- Скрипт из HWs/hw2_practice.md — проливать на master (порт 5001)
+-- Скрипт из HWs/hw2_practice.md — проливать на master (haproxy:5000 внутри docker-сети)
 
 CREATE TABLE owners (
     id SERIAL PRIMARY KEY,
