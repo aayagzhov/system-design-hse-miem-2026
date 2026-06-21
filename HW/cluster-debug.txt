@@ -1,345 +1,332 @@
-﻿=== cluster debug 2026-06-21 15:29:59 ===
+﻿=== cluster debug 2026-06-21 15:38:36 ===
 
 === docker ps -a ===
 NAMES                             STATUS                      PORTS
-postgres-ha-grafana-1             Up 9 minutes                0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
-demo-etcd3                        Up 9 minutes                
-demo-patroni3                     Up 9 minutes                
-demo-etcd1                        Up 9 minutes                
-demo-patroni1                     Up 9 minutes                
-demo-patroni2                     Up 9 minutes                
-postgres-ha-postgres_exporter-1   Up 9 minutes                0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
-demo-etcd2                        Up 9 minutes                
-postgres-ha-prometheus-1          Up 9 minutes                0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
-demo-haproxy                      Up 9 minutes                0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
-bd_postgres_19-postgres-1         Exited (255) 29 hours ago   0.0.0.0:5433->5432/tcp
-db-postgres-1                     Exited (255) 29 hours ago   0.0.0.0:5432->5432/tcp
+postgres-ha-grafana-1             Up About a minute           0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+demo-haproxy                      Up About a minute           0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
+demo-patroni2                     Up About a minute           
+demo-patroni3                     Up About a minute           
+demo-patroni1                     Up About a minute           
+demo-etcd3                        Up About a minute           
+demo-etcd2                        Up About a minute           
+postgres-ha-prometheus-1          Up About a minute           0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+demo-etcd1                        Up About a minute           
+postgres-ha-postgres_exporter-1   Up About a minute           0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+bd_postgres_19-postgres-1         Exited (255) 30 hours ago   0.0.0.0:5433->5432/tcp
+db-postgres-1                     Exited (255) 30 hours ago   0.0.0.0:5432->5432/tcp
 
 === docker logs demo-patroni1 last 50 lines ===
-2026-06-21 12:22:04,780 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:22:17,512 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:22:27,630 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:22:34,835 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:22:47,627 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:22:57,511 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:23:04,860 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:23:17,515 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:23:24,795 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:23:37,641 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:23:47,632 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:23:54,841 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:24:07,516 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:24:17,514 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:24:24,966 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:24:37,515 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:24:44,775 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:24:57,516 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:25:07,511 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:25:14,808 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:25:27,512 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:25:37,517 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:25:44,821 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:25:57,566 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:26:00.775 UTC [36] LOG:  checkpoint starting: time
-2026-06-21 12:26:05.060 UTC [36] LOG:  checkpoint complete: wrote 41 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=4.214 s, sync=0.030 s, total=4.286 s; sync files=10, longest=0.008 s, average=0.003 s; distance=33068 kB, estimate=33068 kB
-2026-06-21 12:26:07,613 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:26:14,817 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:26:27,513 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:26:34,822 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:26:47,516 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:26:57,513 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:27:04,784 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:27:17,517 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:27:27,518 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:27:34,790 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:27:47,517 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:27:57,517 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:28:04,852 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:28:17,517 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:28:24,790 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:28:37,516 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:28:47,516 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:28:54,785 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:29:07,523 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:29:17,516 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:29:24,776 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:29:37,523 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:29:47,512 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:29:54,810 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:36:43,907 ERROR: Failed to get list of machines from http://etcd1:2379/v3beta: ValueError("invalid literal for int() with base 10: 'not_decided'")
+2026-06-21 12:36:43,911 ERROR: Failed to get list of machines from http://etcd2:2379/v3beta: ValueError("invalid literal for int() with base 10: 'not_decided'")
+2026-06-21 12:36:43,913 ERROR: Failed to get list of machines from http://etcd3:2379/v3beta: ValueError("invalid literal for int() with base 10: 'not_decided'")
+2026-06-21 12:36:43,914 INFO: waiting on etcd
+2026-06-21 12:36:48,917 WARNING: Detected Etcd version 3.0.0 is lower than 3.1.0, watches are not supported
+2026-06-21 12:36:48,967 INFO: Selected new etcd server http://172.21.0.7:2379
+2026-06-21 12:36:49,037 INFO: No PostgreSQL configuration items changed, nothing to reload.
+2026-06-21 12:36:49,145 INFO: Lock owner: None; I am patroni1
+2026-06-21 12:36:49,252 INFO: failed to acquire initialize lock
+2026-06-21 12:36:59,099 INFO: Lock owner: patroni2; I am patroni1
+2026-06-21 12:36:59,149 INFO: trying to bootstrap from leader 'patroni2'
+2026-06-21 12:37:05,203 INFO: replica has been created using basebackup
+2026-06-21 12:37:05,204 INFO: bootstrapped from leader 'patroni2'
+2026-06-21 12:37:05,885 INFO: postmaster pid=34
+localhost:5432 - no response
+2026-06-21 12:37:05.900 UTC [34] LOG:  starting PostgreSQL 15.17 (Debian 15.17-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-06-21 12:37:05.900 UTC [34] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-06-21 12:37:05.916 UTC [34] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-06-21 12:37:05.936 UTC [38] LOG:  database system was interrupted; last known up at 2026-06-21 12:36:59 UTC
+2026-06-21 12:37:06.389 UTC [38] LOG:  entering standby mode
+2026-06-21 12:37:06.389 UTC [38] LOG:  starting backup recovery with redo LSN 0/20000D8, checkpoint LSN 0/2000110, on timeline ID 1
+2026-06-21 12:37:06.402 UTC [38] LOG:  redo starts at 0/20000D8
+2026-06-21 12:37:06.408 UTC [38] LOG:  completed backup recovery with redo LSN 0/20000D8 and end LSN 0/3000050
+2026-06-21 12:37:06.408 UTC [38] LOG:  consistent recovery state reached at 0/3000050
+2026-06-21 12:37:06.408 UTC [34] LOG:  database system is ready to accept read-only connections
+2026-06-21 12:37:06.431 UTC [39] LOG:  started streaming WAL from primary at 0/4000000 on timeline 1
+2026-06-21 12:37:06,366 INFO: Lock owner: patroni2; I am patroni1
+2026-06-21 12:37:06,470 INFO: bootstrap from leader 'patroni2' in progress
+2026-06-21 12:37:06,790 INFO: establishing a new patroni heartbeat connection to postgres
+2026-06-21 12:37:06,813 INFO: establishing a new patroni restapi connection to postgres
+2026-06-21 12:37:07,183 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:17,592 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:27,537 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:34,805 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:47,531 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:57,535 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:38:04,812 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:38:17,536 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+2026-06-21 12:38:24,860 INFO: no action. I am (patroni1), a secondary, and following a leader (patroni2)
+localhost:5432 - accepting connections
+localhost:5432 - accepting connections
 
 === docker logs demo-patroni2 last 50 lines ===
-2026-06-21 12:22:28,028 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:35,297 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:48,236 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:57,239 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:05,988 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:17,960 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:25,253 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:38,146 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:48,093 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:55,402 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:07,966 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:17,994 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:25,404 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:37,977 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:45,265 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:57,973 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:08,105 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:15,258 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:27,994 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:38,138 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:45,280 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:58,064 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:06.595 UTC [36] LOG:  restartpoint starting: time
-2026-06-21 12:26:08,024 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:08.065 UTC [36] LOG:  restartpoint complete: wrote 42 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.396 s, sync=0.027 s, total=1.470 s; sync files=10, longest=0.007 s, average=0.003 s; distance=33068 kB, estimate=33068 kB
-2026-06-21 12:26:08.065 UTC [36] LOG:  recovery restart point at 0/404B3A8
-2026-06-21 12:26:08.065 UTC [36] DETAIL:  Last completed transaction was at log time 2026-06-21 12:22:26.36099+00.
-2026-06-21 12:26:15,347 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:27,964 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:35,276 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:47,972 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:57,968 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:05,230 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:17,968 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:27,969 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:35,245 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:47,995 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:57,975 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:05,386 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:17,963 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:25,239 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:37,995 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:47,994 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:55,256 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:08,019 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:18,039 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:25,230 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:37,971 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:45,323 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:58,010 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+The files belonging to this database system will be owned by user "postgres".
+2026-06-21 12:36:55,683 INFO: postmaster pid=33
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.UTF-8".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+creating directory /home/postgres/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... Etc/UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /home/postgres/data -l logfile start
+
+localhost:5432 - no response
+localhost:5432 - accepting connections
+localhost:5432 - accepting connections
+2026-06-21 12:36:55.704 UTC [33] LOG:  starting PostgreSQL 15.17 (Debian 15.17-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-06-21 12:36:55.704 UTC [33] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-06-21 12:36:55.718 UTC [33] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-06-21 12:36:55.734 UTC [37] LOG:  database system was shut down at 2026-06-21 12:36:50 UTC
+2026-06-21 12:36:55.757 UTC [33] LOG:  database system is ready to accept connections
+2026-06-21 12:36:56,402 INFO: establishing a new patroni heartbeat connection to postgres
+2026-06-21 12:36:56,424 INFO: establishing a new patroni restapi connection to postgres
+2026-06-21 12:36:56,882 INFO: running post_bootstrap
+2026-06-21 12:36:57,270 INFO: initialized a new cluster
+2026-06-21 12:36:59.208 UTC [35] LOG:  checkpoint starting: force wait
+2026-06-21 12:36:59.772 UTC [35] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.436 s, sync=0.024 s, total=0.565 s; sync files=6, longest=0.013 s, average=0.004 s; distance=8918 kB, estimate=8918 kB
+2026-06-21 12:36:59.773 UTC [35] LOG:  checkpoint starting: force wait
+2026-06-21 12:36:59.798 UTC [35] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.025 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=8026 kB
+2026-06-21 12:37:04,622 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:37:17,150 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:37:27,028 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:37:34,278 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:37:47,013 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:37:57,041 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:38:04,319 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:38:17,039 INFO: no action. I am (patroni2), the leader with the lock
+2026-06-21 12:38:24,391 INFO: no action. I am (patroni2), the leader with the lock
 
 === docker logs demo-patroni3 last 50 lines ===
-2026-06-21 12:22:28,285 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:35,546 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:48,353 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:55,545 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:08,249 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:18,250 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:25,525 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:38,285 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:48,328 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:23:55,554 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:08,235 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:18,220 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:25,682 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:38,206 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:45,478 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:24:58,215 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:08,203 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:15,507 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:28,311 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:38,199 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:45,513 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:25:58,397 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:06.754 UTC [35] LOG:  restartpoint starting: time
-2026-06-21 12:26:08,347 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:08.245 UTC [35] LOG:  restartpoint complete: wrote 42 buffers (0.3%); 0 WAL file(s) added, 0 removed, 0 recycled; write=1.427 s, sync=0.026 s, total=1.492 s; sync files=10, longest=0.006 s, average=0.003 s; distance=33068 kB, estimate=33068 kB
-2026-06-21 12:26:08.245 UTC [35] LOG:  recovery restart point at 0/404B3A8
-2026-06-21 12:26:08.245 UTC [35] DETAIL:  Last completed transaction was at log time 2026-06-21 12:22:26.36099+00.
-2026-06-21 12:26:15,619 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:28,560 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:35,653 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:48,373 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:26:58,210 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:05,471 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:18,205 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:28,303 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:35,497 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:48,397 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:27:58,212 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:05,648 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:18,228 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:25,533 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:38,384 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:48,308 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:28:55,497 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:08,269 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:18,296 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:25,463 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:38,255 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:45,527 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:29:58,307 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:36:43,911 ERROR: Failed to get list of machines from http://etcd2:2379/v3beta: ValueError("invalid literal for int() with base 10: 'not_decided'")
+localhost:5432 - no response
+localhost:5432 - accepting connections
+localhost:5432 - accepting connections
+2026-06-21 12:36:43,914 ERROR: Failed to get list of machines from http://etcd1:2379/v3beta: ValueError("invalid literal for int() with base 10: 'not_decided'")
+2026-06-21 12:36:43,916 ERROR: Failed to get list of machines from http://etcd3:2379/v3beta: ValueError("invalid literal for int() with base 10: 'not_decided'")
+2026-06-21 12:36:43,916 INFO: waiting on etcd
+2026-06-21 12:36:48,920 WARNING: Detected Etcd version 3.0.0 is lower than 3.1.0, watches are not supported
+2026-06-21 12:36:48,967 INFO: Selected new etcd server http://172.21.0.2:2379
+2026-06-21 12:36:49,037 INFO: No PostgreSQL configuration items changed, nothing to reload.
+2026-06-21 12:36:49,137 INFO: Lock owner: None; I am patroni3
+2026-06-21 12:36:49,240 INFO: failed to acquire initialize lock
+2026-06-21 12:36:59,091 INFO: Lock owner: patroni2; I am patroni3
+2026-06-21 12:36:59,141 INFO: trying to bootstrap from leader 'patroni2'
+2026-06-21 12:37:05,051 INFO: replica has been created using basebackup
+2026-06-21 12:37:05,052 INFO: bootstrapped from leader 'patroni2'
+2026-06-21 12:37:05,744 INFO: postmaster pid=32
+2026-06-21 12:37:05.760 UTC [32] LOG:  starting PostgreSQL 15.17 (Debian 15.17-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-06-21 12:37:05.761 UTC [32] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2026-06-21 12:37:05.773 UTC [32] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2026-06-21 12:37:05.790 UTC [36] LOG:  database system was interrupted; last known up at 2026-06-21 12:36:59 UTC
+2026-06-21 12:37:06,171 INFO: establishing a new patroni heartbeat connection to postgres
+2026-06-21 12:37:06.175 UTC [38] FATAL:  the database system is starting up
+2026-06-21 12:37:06,219 INFO: establishing a new patroni heartbeat connection to postgres
+2026-06-21 12:37:06.223 UTC [40] FATAL:  the database system is starting up
+2026-06-21 12:37:06.230 UTC [36] LOG:  entering standby mode
+2026-06-21 12:37:06.231 UTC [36] LOG:  starting backup recovery with redo LSN 0/2000028, checkpoint LSN 0/2000060, on timeline ID 1
+2026-06-21 12:37:06.245 UTC [36] LOG:  redo starts at 0/2000028
+2026-06-21 12:37:06.251 UTC [36] LOG:  completed backup recovery with redo LSN 0/2000028 and end LSN 0/20001B0
+2026-06-21 12:37:06.251 UTC [36] LOG:  consistent recovery state reached at 0/20001B0
+2026-06-21 12:37:06.251 UTC [32] LOG:  database system is ready to accept read-only connections
+2026-06-21 12:37:06.276 UTC [41] LOG:  started streaming WAL from primary at 0/3000000 on timeline 1
+2026-06-21 12:37:06,369 INFO: Lock owner: patroni2; I am patroni3
+2026-06-21 12:37:06,470 INFO: bootstrap from leader 'patroni2' in progress
+2026-06-21 12:37:06,844 INFO: Lock owner: patroni2; I am patroni3
+2026-06-21 12:37:06,845 INFO: establishing a new patroni heartbeat connection to postgres
+2026-06-21 12:37:07,055 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:07,458 INFO: establishing a new patroni restapi connection to postgres
+2026-06-21 12:37:17,444 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:27,392 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:34,653 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:47,407 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:37:57,391 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:38:04,667 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:38:17,384 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
+2026-06-21 12:38:24,720 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni2)
 
 === docker logs demo-etcd1 last 50 lines ===
-2026-06-21 12:20:43.966833 I | etcdserver: initial cluster = etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380
-2026-06-21 12:20:43.986398 I | etcdserver: starting member b2e169fcb8a34028 in cluster eafe43910b6e9f0
-2026-06-21 12:20:43.986469 I | raft: b2e169fcb8a34028 became follower at term 0
-2026-06-21 12:20:43.986485 I | raft: newRaft b2e169fcb8a34028 [peers: [], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
-2026-06-21 12:20:43.986492 I | raft: b2e169fcb8a34028 became follower at term 1
-2026-06-21 12:20:43.999967 W | auth: simple token is not cryptographically signed
-2026-06-21 12:20:44.009371 I | rafthttp: starting peer 1bab629f01fa9065...
-2026-06-21 12:20:44.010079 I | rafthttp: started HTTP pipelining with peer 1bab629f01fa9065
-2026-06-21 12:20:44.018288 I | rafthttp: started streaming with peer 1bab629f01fa9065 (writer)
-2026-06-21 12:20:44.018569 I | rafthttp: started streaming with peer 1bab629f01fa9065 (writer)
-2026-06-21 12:20:44.025983 I | rafthttp: started peer 1bab629f01fa9065
-2026-06-21 12:20:44.026054 I | rafthttp: added peer 1bab629f01fa9065
-2026-06-21 12:20:44.026074 I | rafthttp: starting peer 8ecb6af518d241cc...
-2026-06-21 12:20:44.026087 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
-2026-06-21 12:20:44.026339 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream Message reader)
-2026-06-21 12:20:44.026515 I | rafthttp: started HTTP pipelining with peer 8ecb6af518d241cc
-2026-06-21 12:20:44.028221 I | rafthttp: peer 1bab629f01fa9065 became active
-2026-06-21 12:20:44.028281 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message reader)
-2026-06-21 12:20:44.028344 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
-2026-06-21 12:20:44.030617 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
-2026-06-21 12:20:44.034691 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
-2026-06-21 12:20:44.041176 I | rafthttp: started peer 8ecb6af518d241cc
-2026-06-21 12:20:44.041245 I | rafthttp: added peer 8ecb6af518d241cc
-2026-06-21 12:20:44.041257 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
-2026-06-21 12:20:44.041279 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream Message reader)
-2026-06-21 12:20:44.041379 I | etcdserver: starting server... [version: 3.3.13, cluster version: to_be_decided]
-2026-06-21 12:20:44.043147 I | etcdserver/membership: added member 1bab629f01fa9065 [http://etcd3:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:44.043316 I | etcdserver/membership: added member 8ecb6af518d241cc [http://etcd2:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:44.043374 I | etcdserver/membership: added member b2e169fcb8a34028 [http://etcd1:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:44.043653 I | rafthttp: peer 8ecb6af518d241cc became active
-2026-06-21 12:20:44.043730 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
-2026-06-21 12:20:44.044241 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message reader)
-2026-06-21 12:20:44.046203 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message writer)
-2026-06-21 12:20:44.046277 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 writer)
-2026-06-21 12:20:44.096841 I | etcdserver: b2e169fcb8a34028 initialzed peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
-2026-06-21 12:20:44.335495 I | raft: b2e169fcb8a34028 [term: 1] received a MsgVote message with higher term from 8ecb6af518d241cc [term: 2]
-2026-06-21 12:20:44.335557 I | raft: b2e169fcb8a34028 became follower at term 2
-2026-06-21 12:20:44.335573 I | raft: b2e169fcb8a34028 [logterm: 1, index: 3, vote: 0] cast MsgVote for 8ecb6af518d241cc [logterm: 1, index: 3] at term 2
-2026-06-21 12:20:44.338287 I | raft: raft.node: b2e169fcb8a34028 elected leader 8ecb6af518d241cc at term 2
-2026-06-21 12:20:44.351931 I | embed: ready to serve client requests
-2026-06-21 12:20:44.352235 I | etcdserver: published {Name:etcd1 ClientURLs:[http://172.21.0.7:2379]} to cluster eafe43910b6e9f0
-2026-06-21 12:20:44.352652 N | embed: serving insecure client requests on [::]:2379, this is strongly discouraged!
-2026-06-21 12:20:46.353652 N | etcdserver/membership: set the initial cluster version to 3.0
-2026-06-21 12:20:46.353836 I | etcdserver/api: enabled capabilities for version 3.0
-2026-06-21 12:20:46.701807 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message writer)
-2026-06-21 12:20:46.701913 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 writer)
+2026-06-21 12:36:43.414327 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream Message reader)
+2026-06-21 12:36:43.414374 I | rafthttp: added peer 1bab629f01fa9065
+2026-06-21 12:36:43.414391 I | rafthttp: starting peer 8ecb6af518d241cc...
+2026-06-21 12:36:43.414447 I | rafthttp: started HTTP pipelining with peer 8ecb6af518d241cc
+2026-06-21 12:36:43.416401 I | rafthttp: peer 1bab629f01fa9065 became active
+2026-06-21 12:36:43.416462 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message reader)
+2026-06-21 12:36:43.416546 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.417797 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
+2026-06-21 12:36:43.421669 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
+2026-06-21 12:36:43.427745 I | rafthttp: started peer 8ecb6af518d241cc
+2026-06-21 12:36:43.427836 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
+2026-06-21 12:36:43.427886 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream Message reader)
+2026-06-21 12:36:43.427982 I | rafthttp: added peer 8ecb6af518d241cc
+2026-06-21 12:36:43.428032 I | etcdserver: starting server... [version: 3.3.13, cluster version: to_be_decided]
+2026-06-21 12:36:43.429299 I | etcdserver/membership: added member 1bab629f01fa9065 [http://etcd3:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.429584 I | etcdserver/membership: added member 8ecb6af518d241cc [http://etcd2:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.429829 I | etcdserver/membership: added member b2e169fcb8a34028 [http://etcd1:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.432719 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message writer)
+2026-06-21 12:36:43.435511 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 writer)
+2026-06-21 12:36:43.495135 I | rafthttp: peer 8ecb6af518d241cc became active
+2026-06-21 12:36:43.495204 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message writer)
+2026-06-21 12:36:43.498503 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 writer)
+2026-06-21 12:36:43.529527 I | etcdserver: b2e169fcb8a34028 initialzed peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
+2026-06-21 12:36:43.889101 I | raft: b2e169fcb8a34028 is starting a new election at term 1
+2026-06-21 12:36:43.889193 I | raft: b2e169fcb8a34028 became candidate at term 2
+2026-06-21 12:36:43.889618 I | raft: b2e169fcb8a34028 received MsgVoteResp from b2e169fcb8a34028 at term 2
+2026-06-21 12:36:43.889705 I | raft: b2e169fcb8a34028 [logterm: 1, index: 3] sent MsgVote request to 1bab629f01fa9065 at term 2
+2026-06-21 12:36:43.889735 I | raft: b2e169fcb8a34028 [logterm: 1, index: 3] sent MsgVote request to 8ecb6af518d241cc at term 2
+2026-06-21 12:36:43.895287 I | raft: b2e169fcb8a34028 received MsgVoteResp from 1bab629f01fa9065 at term 2
+2026-06-21 12:36:43.895347 I | raft: b2e169fcb8a34028 [quorum:2] has received 2 MsgVoteResp votes and 0 vote rejections
+2026-06-21 12:36:43.895368 I | raft: b2e169fcb8a34028 became leader at term 2
+2026-06-21 12:36:43.895381 I | raft: raft.node: b2e169fcb8a34028 elected leader b2e169fcb8a34028 at term 2
+2026-06-21 12:36:43.904240 I | etcdserver: published {Name:etcd1 ClientURLs:[http://172.21.0.3:2379]} to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.904301 I | embed: ready to serve client requests
+2026-06-21 12:36:43.905355 N | embed: serving insecure client requests on [::]:2379, this is strongly discouraged!
+2026-06-21 12:36:45.428484 E | rafthttp: failed to dial 8ecb6af518d241cc on stream Message (dial tcp: i/o timeout)
+2026-06-21 12:36:45.428545 I | rafthttp: peer 8ecb6af518d241cc became inactive (message send to peer failed)
+2026-06-21 12:36:45.900747 W | etcdserver: failed to reach the peerURL(http://etcd2:2380) of member 8ecb6af518d241cc (Get http://etcd2:2380/version: dial tcp: i/o timeout)
+2026-06-21 12:36:45.900815 W | etcdserver: cannot get the version of member 8ecb6af518d241cc (Get http://etcd2:2380/version: dial tcp: i/o timeout)
+2026-06-21 12:36:45.900894 I | etcdserver: setting up the initial cluster version to 3.0
+2026-06-21 12:36:45.904393 N | etcdserver/membership: set the initial cluster version to 3.0
+2026-06-21 12:36:45.904539 I | etcdserver/api: enabled capabilities for version 3.0
+2026-06-21 12:36:46.362393 I | rafthttp: peer 8ecb6af518d241cc became active
+2026-06-21 12:36:46.362466 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message reader)
+2026-06-21 12:36:46.362509 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
 proto: no coders for int
 proto: no encoder for ValueSize int [GetProperties]
-2026-06-21 12:20:50.361746 N | etcdserver/membership: updated the cluster version from 3.0 to 3.3
-2026-06-21 12:20:50.361892 I | etcdserver/api: enabled capabilities for version 3.3
+2026-06-21 12:36:49.909800 I | etcdserver: updating the cluster version from 3.0 to 3.3
+2026-06-21 12:36:49.914033 N | etcdserver/membership: updated the cluster version from 3.0 to 3.3
+2026-06-21 12:36:49.914189 I | etcdserver/api: enabled capabilities for version 3.3
 
 === docker logs demo-etcd2 last 50 lines ===
-2026-06-21 12:20:43.958902 I | rafthttp: started peer 1bab629f01fa9065
-2026-06-21 12:20:43.958996 I | rafthttp: added peer 1bab629f01fa9065
-2026-06-21 12:20:43.959019 I | rafthttp: starting peer b2e169fcb8a34028...
-2026-06-21 12:20:43.959053 I | rafthttp: started HTTP pipelining with peer b2e169fcb8a34028
-2026-06-21 12:20:43.959371 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream Message reader)
-2026-06-21 12:20:43.959719 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
-2026-06-21 12:20:43.959897 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
-2026-06-21 12:20:43.960281 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
-2026-06-21 12:20:43.961183 I | rafthttp: started peer b2e169fcb8a34028
-2026-06-21 12:20:43.961251 I | rafthttp: added peer b2e169fcb8a34028
-2026-06-21 12:20:43.961269 I | etcdserver: starting server... [version: 3.3.13, cluster version: to_be_decided]
-2026-06-21 12:20:43.961376 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
-2026-06-21 12:20:43.961473 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream Message reader)
-2026-06-21 12:20:43.962212 I | etcdserver/membership: added member 1bab629f01fa9065 [http://etcd3:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:43.962409 I | etcdserver/membership: added member 8ecb6af518d241cc [http://etcd2:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:43.962476 I | etcdserver/membership: added member b2e169fcb8a34028 [http://etcd1:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:43.962995 I | rafthttp: peer 1bab629f01fa9065 became active
-2026-06-21 12:20:43.963056 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
-2026-06-21 12:20:43.963660 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message reader)
-2026-06-21 12:20:43.966147 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message writer)
-2026-06-21 12:20:43.967490 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 writer)
-2026-06-21 12:20:44.043699 I | rafthttp: peer b2e169fcb8a34028 became active
-2026-06-21 12:20:44.043765 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 writer)
-2026-06-21 12:20:44.044021 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message writer)
-2026-06-21 12:20:44.062667 I | etcdserver: 8ecb6af518d241cc initialzed peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
-2026-06-21 12:20:44.332481 I | raft: 8ecb6af518d241cc is starting a new election at term 1
-2026-06-21 12:20:44.332633 I | raft: 8ecb6af518d241cc became candidate at term 2
-2026-06-21 12:20:44.332673 I | raft: 8ecb6af518d241cc received MsgVoteResp from 8ecb6af518d241cc at term 2
-2026-06-21 12:20:44.332687 I | raft: 8ecb6af518d241cc [logterm: 1, index: 3] sent MsgVote request to 1bab629f01fa9065 at term 2
-2026-06-21 12:20:44.332713 I | raft: 8ecb6af518d241cc [logterm: 1, index: 3] sent MsgVote request to b2e169fcb8a34028 at term 2
-2026-06-21 12:20:44.337381 I | raft: 8ecb6af518d241cc received MsgVoteResp from 1bab629f01fa9065 at term 2
-2026-06-21 12:20:44.337437 I | raft: 8ecb6af518d241cc [quorum:2] has received 2 MsgVoteResp votes and 0 vote rejections
-2026-06-21 12:20:44.337456 I | raft: 8ecb6af518d241cc became leader at term 2
-2026-06-21 12:20:44.337470 I | raft: raft.node: 8ecb6af518d241cc elected leader 8ecb6af518d241cc at term 2
-2026-06-21 12:20:44.351415 I | etcdserver: published {Name:etcd2 ClientURLs:[http://172.21.0.2:2379]} to cluster eafe43910b6e9f0
-2026-06-21 12:20:44.351545 I | embed: ready to serve client requests
-2026-06-21 12:20:44.352559 N | embed: serving insecure client requests on [::]:2379, this is strongly discouraged!
-2026-06-21 12:20:45.968856 E | rafthttp: failed to dial b2e169fcb8a34028 on stream MsgApp v2 (dial tcp: i/o timeout)
-2026-06-21 12:20:45.968923 I | rafthttp: peer b2e169fcb8a34028 became inactive (message send to peer failed)
-2026-06-21 12:20:46.348857 W | etcdserver: failed to reach the peerURL(http://etcd1:2380) of member b2e169fcb8a34028 (Get http://etcd1:2380/version: dial tcp: i/o timeout)
-2026-06-21 12:20:46.348925 W | etcdserver: cannot get the version of member b2e169fcb8a34028 (Get http://etcd1:2380/version: dial tcp: i/o timeout)
-2026-06-21 12:20:46.348973 I | etcdserver: setting up the initial cluster version to 3.0
-2026-06-21 12:20:46.353090 N | etcdserver/membership: set the initial cluster version to 3.0
-2026-06-21 12:20:46.353205 I | etcdserver/api: enabled capabilities for version 3.0
-2026-06-21 12:20:46.701890 I | rafthttp: peer b2e169fcb8a34028 became active
-2026-06-21 12:20:46.701953 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
-2026-06-21 12:20:46.702058 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message reader)
-2026-06-21 12:20:50.355391 I | etcdserver: updating the cluster version from 3.0 to 3.3
-2026-06-21 12:20:50.361383 N | etcdserver/membership: updated the cluster version from 3.0 to 3.3
-2026-06-21 12:20:50.361506 I | etcdserver/api: enabled capabilities for version 3.3
-
-=== docker logs demo-etcd3 last 50 lines ===
-2026-06-21 12:20:43.822100 I | etcdserver: initial cluster = etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380
-2026-06-21 12:20:43.844557 I | etcdserver: starting member 1bab629f01fa9065 in cluster eafe43910b6e9f0
-2026-06-21 12:20:43.844633 I | raft: 1bab629f01fa9065 became follower at term 0
-2026-06-21 12:20:43.844649 I | raft: newRaft 1bab629f01fa9065 [peers: [], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
-2026-06-21 12:20:43.844657 I | raft: 1bab629f01fa9065 became follower at term 1
-2026-06-21 12:20:43.855819 W | auth: simple token is not cryptographically signed
-2026-06-21 12:20:43.865355 I | rafthttp: starting peer 8ecb6af518d241cc...
-2026-06-21 12:20:43.866271 I | rafthttp: started HTTP pipelining with peer 8ecb6af518d241cc
-2026-06-21 12:20:43.874962 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
-2026-06-21 12:20:43.875207 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
-2026-06-21 12:20:43.882175 I | rafthttp: started peer 8ecb6af518d241cc
-2026-06-21 12:20:43.882277 I | rafthttp: added peer 8ecb6af518d241cc
-2026-06-21 12:20:43.882339 I | rafthttp: starting peer b2e169fcb8a34028...
-2026-06-21 12:20:43.882357 I | rafthttp: started HTTP pipelining with peer b2e169fcb8a34028
-2026-06-21 12:20:43.882452 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
-2026-06-21 12:20:43.882505 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream Message reader)
-2026-06-21 12:20:43.885816 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
-2026-06-21 12:20:43.889240 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
-2026-06-21 12:20:43.897831 I | rafthttp: started peer b2e169fcb8a34028
-2026-06-21 12:20:43.897903 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
-2026-06-21 12:20:43.897924 I | rafthttp: added peer b2e169fcb8a34028
-2026-06-21 12:20:43.897946 I | etcdserver: starting server... [version: 3.3.13, cluster version: to_be_decided]
-2026-06-21 12:20:43.898138 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream Message reader)
-2026-06-21 12:20:43.898888 I | etcdserver/membership: added member 1bab629f01fa9065 [http://etcd3:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:43.899187 I | etcdserver/membership: added member 8ecb6af518d241cc [http://etcd2:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:43.899389 I | etcdserver/membership: added member b2e169fcb8a34028 [http://etcd1:2380] to cluster eafe43910b6e9f0
-2026-06-21 12:20:43.963098 I | rafthttp: peer 8ecb6af518d241cc became active
-2026-06-21 12:20:43.963184 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message writer)
-2026-06-21 12:20:43.965714 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 writer)
-2026-06-21 12:20:43.966282 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message reader)
-2026-06-21 12:20:43.966436 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
-2026-06-21 12:20:44.028134 I | rafthttp: peer b2e169fcb8a34028 became active
-2026-06-21 12:20:44.028210 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message writer)
-2026-06-21 12:20:44.031189 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 writer)
-2026-06-21 12:20:44.046319 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
-2026-06-21 12:20:44.046646 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message reader)
-2026-06-21 12:20:44.050514 I | etcdserver: 1bab629f01fa9065 initialzed peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
-2026-06-21 12:20:44.335430 I | raft: 1bab629f01fa9065 [term: 1] received a MsgVote message with higher term from 8ecb6af518d241cc [term: 2]
-2026-06-21 12:20:44.335493 I | raft: 1bab629f01fa9065 became follower at term 2
-2026-06-21 12:20:44.335510 I | raft: 1bab629f01fa9065 [logterm: 1, index: 3, vote: 0] cast MsgVote for 8ecb6af518d241cc [logterm: 1, index: 3] at term 2
-2026-06-21 12:20:44.338117 I | raft: raft.node: 1bab629f01fa9065 elected leader 8ecb6af518d241cc at term 2
-2026-06-21 12:20:44.352044 I | etcdserver: published {Name:etcd3 ClientURLs:[http://172.21.0.3:2379]} to cluster eafe43910b6e9f0
-2026-06-21 12:20:44.352146 I | embed: ready to serve client requests
-2026-06-21 12:20:44.353144 N | embed: serving insecure client requests on [::]:2379, this is strongly discouraged!
-2026-06-21 12:20:46.353612 N | etcdserver/membership: set the initial cluster version to 3.0
-2026-06-21 12:20:46.353729 I | etcdserver/api: enabled capabilities for version 3.0
+2026-06-21 12:36:43.433340 I | etcdserver: initial cluster = etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380
+2026-06-21 12:36:43.457371 I | etcdserver: starting member 8ecb6af518d241cc in cluster eafe43910b6e9f0
+2026-06-21 12:36:43.457463 I | raft: 8ecb6af518d241cc became follower at term 0
+2026-06-21 12:36:43.457481 I | raft: newRaft 8ecb6af518d241cc [peers: [], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+2026-06-21 12:36:43.457489 I | raft: 8ecb6af518d241cc became follower at term 1
+2026-06-21 12:36:43.469765 W | auth: simple token is not cryptographically signed
+2026-06-21 12:36:43.480291 I | rafthttp: starting peer 1bab629f01fa9065...
+2026-06-21 12:36:43.480411 I | rafthttp: started HTTP pipelining with peer 1bab629f01fa9065
+2026-06-21 12:36:43.482135 I | rafthttp: started streaming with peer 1bab629f01fa9065 (writer)
+2026-06-21 12:36:43.483103 I | rafthttp: started streaming with peer 1bab629f01fa9065 (writer)
+2026-06-21 12:36:43.488101 I | rafthttp: started peer 1bab629f01fa9065
+2026-06-21 12:36:43.488175 I | rafthttp: added peer 1bab629f01fa9065
+2026-06-21 12:36:43.488777 I | rafthttp: starting peer b2e169fcb8a34028...
+2026-06-21 12:36:43.488879 I | rafthttp: started HTTP pipelining with peer b2e169fcb8a34028
+2026-06-21 12:36:43.489531 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.489757 I | rafthttp: started streaming with peer 1bab629f01fa9065 (stream Message reader)
+2026-06-21 12:36:43.490283 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
+2026-06-21 12:36:43.491674 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
+2026-06-21 12:36:43.492393 I | rafthttp: started peer b2e169fcb8a34028
+2026-06-21 12:36:43.492451 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.492488 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream Message reader)
+2026-06-21 12:36:43.492555 I | rafthttp: added peer b2e169fcb8a34028
+2026-06-21 12:36:43.492758 I | etcdserver: starting server... [version: 3.3.13, cluster version: to_be_decided]
+2026-06-21 12:36:43.494697 I | etcdserver/membership: added member 1bab629f01fa9065 [http://etcd3:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.494783 I | rafthttp: peer 1bab629f01fa9065 became active
+2026-06-21 12:36:43.494800 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message reader)
+2026-06-21 12:36:43.494963 I | etcdserver/membership: added member 8ecb6af518d241cc [http://etcd2:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.495157 I | rafthttp: peer b2e169fcb8a34028 became active
+2026-06-21 12:36:43.495222 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message reader)
+2026-06-21 12:36:43.495234 I | etcdserver/membership: added member b2e169fcb8a34028 [http://etcd1:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.495707 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.496281 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.548294 I | etcdserver: 8ecb6af518d241cc initialzed peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
+2026-06-21 12:36:43.892048 I | raft: 8ecb6af518d241cc [term: 1] received a MsgVote message with higher term from b2e169fcb8a34028 [term: 2]
+2026-06-21 12:36:43.892131 I | raft: 8ecb6af518d241cc became follower at term 2
+2026-06-21 12:36:43.892148 I | raft: 8ecb6af518d241cc [logterm: 1, index: 3, vote: 0] cast MsgVote for b2e169fcb8a34028 [logterm: 1, index: 3] at term 2
+2026-06-21 12:36:43.895808 I | raft: raft.node: 8ecb6af518d241cc elected leader b2e169fcb8a34028 at term 2
+2026-06-21 12:36:43.908384 I | embed: ready to serve client requests
+2026-06-21 12:36:43.908543 I | etcdserver: published {Name:etcd2 ClientURLs:[http://172.21.0.7:2379]} to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.909370 N | embed: serving insecure client requests on [::]:2379, this is strongly discouraged!
+2026-06-21 12:36:45.904536 N | etcdserver/membership: set the initial cluster version to 3.0
+2026-06-21 12:36:45.904656 I | etcdserver/api: enabled capabilities for version 3.0
+2026-06-21 12:36:46.265247 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream Message writer)
+2026-06-21 12:36:46.265372 I | rafthttp: established a TCP streaming connection with peer 1bab629f01fa9065 (stream MsgApp v2 writer)
+2026-06-21 12:36:46.362233 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message writer)
+2026-06-21 12:36:46.362303 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 writer)
 proto: no coders for int
 proto: no encoder for ValueSize int [GetProperties]
-2026-06-21 12:20:50.361730 N | etcdserver/membership: updated the cluster version from 3.0 to 3.3
-2026-06-21 12:20:50.361877 I | etcdserver/api: enabled capabilities for version 3.3
+2026-06-21 12:36:49.914189 N | etcdserver/membership: updated the cluster version from 3.0 to 3.3
+2026-06-21 12:36:49.914272 I | etcdserver/api: enabled capabilities for version 3.3
+
+=== docker logs demo-etcd3 last 50 lines ===
+2026-06-21 12:36:43.290175 I | raft: newRaft 1bab629f01fa9065 [peers: [], term: 0, commit: 0, applied: 0, lastindex: 0, lastterm: 0]
+2026-06-21 12:36:43.290183 I | raft: 1bab629f01fa9065 became follower at term 1
+2026-06-21 12:36:43.305791 W | auth: simple token is not cryptographically signed
+2026-06-21 12:36:43.315253 I | rafthttp: starting peer 8ecb6af518d241cc...
+2026-06-21 12:36:43.315356 I | rafthttp: started HTTP pipelining with peer 8ecb6af518d241cc
+2026-06-21 12:36:43.316657 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
+2026-06-21 12:36:43.317743 I | rafthttp: started streaming with peer 8ecb6af518d241cc (writer)
+2026-06-21 12:36:43.320569 I | rafthttp: started peer 8ecb6af518d241cc
+2026-06-21 12:36:43.320681 I | rafthttp: added peer 8ecb6af518d241cc
+2026-06-21 12:36:43.320949 I | rafthttp: starting peer b2e169fcb8a34028...
+2026-06-21 12:36:43.320975 I | rafthttp: started HTTP pipelining with peer b2e169fcb8a34028
+2026-06-21 12:36:43.321428 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream Message reader)
+2026-06-21 12:36:43.321843 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
+2026-06-21 12:36:43.321932 I | rafthttp: started streaming with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
+2026-06-21 12:36:43.322458 I | rafthttp: started streaming with peer b2e169fcb8a34028 (writer)
+2026-06-21 12:36:43.323584 I | rafthttp: started peer b2e169fcb8a34028
+2026-06-21 12:36:43.323654 I | rafthttp: added peer b2e169fcb8a34028
+2026-06-21 12:36:43.323675 I | etcdserver: starting server... [version: 3.3.13, cluster version: to_be_decided]
+2026-06-21 12:36:43.323707 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.324181 I | rafthttp: started streaming with peer b2e169fcb8a34028 (stream Message reader)
+2026-06-21 12:36:43.324674 I | etcdserver/membership: added member 1bab629f01fa9065 [http://etcd3:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.324826 I | etcdserver/membership: added member 8ecb6af518d241cc [http://etcd2:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.324920 I | etcdserver/membership: added member b2e169fcb8a34028 [http://etcd1:2380] to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.416304 I | rafthttp: peer b2e169fcb8a34028 became active
+2026-06-21 12:36:43.416376 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message writer)
+2026-06-21 12:36:43.417747 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 writer)
+2026-06-21 12:36:43.432780 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream MsgApp v2 reader)
+2026-06-21 12:36:43.433022 I | rafthttp: established a TCP streaming connection with peer b2e169fcb8a34028 (stream Message reader)
+2026-06-21 12:36:43.494692 I | rafthttp: peer 8ecb6af518d241cc became active
+2026-06-21 12:36:43.494765 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message writer)
+2026-06-21 12:36:43.495801 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 writer)
+2026-06-21 12:36:43.529488 I | etcdserver: 1bab629f01fa9065 initialzed peer connection; fast-forwarding 8 ticks (election ticks 10) with 2 active peer(s)
+2026-06-21 12:36:43.892046 I | raft: 1bab629f01fa9065 [term: 1] received a MsgVote message with higher term from b2e169fcb8a34028 [term: 2]
+2026-06-21 12:36:43.892133 I | raft: 1bab629f01fa9065 became follower at term 2
+2026-06-21 12:36:43.892184 I | raft: 1bab629f01fa9065 [logterm: 1, index: 3, vote: 0] cast MsgVote for b2e169fcb8a34028 [logterm: 1, index: 3] at term 2
+2026-06-21 12:36:43.895932 I | raft: raft.node: 1bab629f01fa9065 elected leader b2e169fcb8a34028 at term 2
+2026-06-21 12:36:43.907265 I | etcdserver: published {Name:etcd3 ClientURLs:[http://172.21.0.2:2379]} to cluster eafe43910b6e9f0
+2026-06-21 12:36:43.907395 I | embed: ready to serve client requests
+2026-06-21 12:36:43.907993 N | embed: serving insecure client requests on [::]:2379, this is strongly discouraged!
+2026-06-21 12:36:45.323172 E | rafthttp: failed to dial 8ecb6af518d241cc on stream MsgApp v2 (dial tcp: i/o timeout)
+2026-06-21 12:36:45.323235 I | rafthttp: peer 8ecb6af518d241cc became inactive (message send to peer failed)
+2026-06-21 12:36:45.904707 N | etcdserver/membership: set the initial cluster version to 3.0
+2026-06-21 12:36:45.904877 I | etcdserver/api: enabled capabilities for version 3.0
+2026-06-21 12:36:46.265412 I | rafthttp: peer 8ecb6af518d241cc became active
+2026-06-21 12:36:46.265520 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream Message reader)
+2026-06-21 12:36:46.265564 I | rafthttp: established a TCP streaming connection with peer 8ecb6af518d241cc (stream MsgApp v2 reader)
+proto: no coders for int
+proto: no encoder for ValueSize int [GetProperties]
+2026-06-21 12:36:49.914238 N | etcdserver/membership: updated the cluster version from 3.0 to 3.3
+2026-06-21 12:36:49.914355 I | etcdserver/api: enabled capabilities for version 3.3
 
 === docker logs demo-haproxy last 50 lines ===
-1bab629f01fa9065, started, etcd3, http://etcd3:2380, http://172.21.0.3:2379
-2026-06-21T12:20:44Z haproxy confd[58]: INFO Backend set to etcdv3
-2026-06-21T12:20:44Z haproxy confd[58]: INFO Starting confd
-2026-06-21T12:20:44Z haproxy confd[58]: INFO Backend source(s) set to http://etcd1:2379, http://etcd2:2379, http://etcd3:2379
-2026-06-21T12:20:44Z haproxy confd[58]: INFO /etc/haproxy/haproxy.cfg has md5sum 4ff4145ad0c378b536651033f2ad6421 should be 7624a5cb2369166354d697a9628b73b9
-2026-06-21T12:20:44Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg out of sync
-2026-06-21T12:20:44Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg has been updated
-8ecb6af518d241cc, started, etcd2, http://etcd2:2380, http://172.21.0.2:2379
-b2e169fcb8a34028, started, etcd1, http://etcd1:2380, http://172.21.0.7:2379
-2026-06-21T12:20:54Z haproxy confd[58]: INFO /etc/haproxy/haproxy.cfg has md5sum 7624a5cb2369166354d697a9628b73b9 should be 073f19cb528e68409ce2d9dbfd17830f
-2026-06-21T12:20:54Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg out of sync
-2026-06-21T12:20:54Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg has been updated
+1bab629f01fa9065, started, etcd3, http://etcd3:2380, http://172.21.0.2:2379
+8ecb6af518d241cc, started, etcd2, http://etcd2:2380, http://172.21.0.7:2379
+b2e169fcb8a34028, started, etcd1, http://etcd1:2380, http://172.21.0.3:2379
+2026-06-21T12:36:44Z haproxy confd[57]: INFO Backend set to etcdv3
+2026-06-21T12:36:44Z haproxy confd[57]: INFO Starting confd
+2026-06-21T12:36:44Z haproxy confd[57]: INFO Backend source(s) set to http://etcd1:2379, http://etcd2:2379, http://etcd3:2379
+2026-06-21T12:36:44Z haproxy confd[57]: INFO /etc/haproxy/haproxy.cfg has md5sum 4ff4145ad0c378b536651033f2ad6421 should be 7624a5cb2369166354d697a9628b73b9
+2026-06-21T12:36:44Z haproxy confd[57]: INFO Target config /etc/haproxy/haproxy.cfg out of sync
+2026-06-21T12:36:44Z haproxy confd[57]: INFO Target config /etc/haproxy/haproxy.cfg has been updated
+2026-06-21T12:36:54Z haproxy confd[57]: INFO /etc/haproxy/haproxy.cfg has md5sum 7624a5cb2369166354d697a9628b73b9 should be bd6434be6f36a1bd3251879f1e29dad0
+2026-06-21T12:36:54Z haproxy confd[57]: INFO Target config /etc/haproxy/haproxy.cfg out of sync
+2026-06-21T12:36:54Z haproxy confd[57]: INFO Target config /etc/haproxy/haproxy.cfg has been updated
 
 === docker inspect demo-patroni1 ===
 running exit=0 error=
@@ -349,7 +336,7 @@ running exit=0 error=
 
 === docker images patroni ===
 IMAGE            ID             DISK USAGE   CONTENT SIZE   EXTRA
-patroni:latest   446a43af92f0        743MB          190MB   U    
+patroni:latest   6c5f8a57517b        743MB          190MB   U    
 
 === git core.autocrlf ===
 false
