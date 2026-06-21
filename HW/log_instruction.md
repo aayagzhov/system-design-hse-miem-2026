@@ -74,20 +74,29 @@ Start-Sleep -Seconds 30
 
 ## Исправление CRLF (если в логах `entrypoint.sh: Syntax error`)
 
+Один скрипт — всё сам:
+
 ```powershell
 cd C:\Users\User\CppProjects\system-design-hse-miem-2026
-git config core.autocrlf false
+git pull
 
 cd code\postgres-ha
-.\fix-line-endings.ps1
+.\fix-and-rebuild.ps1
+```
 
+Скрипт: `core.autocrlf false` → LF в entrypoint → `docker build --no-cache` → `compose up` → `patronictl list`.
+
+Вручную (если нужно по шагам):
+
+```powershell
+git config core.autocrlf false
+cd code\postgres-ha
+.\fix-line-endings.ps1
 cd patroni-master
 docker build --no-cache --build-arg PG_MAJOR=15 -t patroni .
-
 cd ..
 docker compose down
 docker compose up -d
 Start-Sleep -Seconds 90
-docker ps
 docker exec demo-patroni1 patronictl list
 ```

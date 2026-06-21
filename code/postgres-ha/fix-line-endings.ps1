@@ -13,7 +13,8 @@ foreach ($rel in $files) {
     }
     $text = [IO.File]::ReadAllText($path)
     $fixed = $text -replace "`r`n", "`n" -replace "`r", "`n"
-    [IO.File]::WriteAllText($path, $fixed)
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [IO.File]::WriteAllText($path, $fixed, $utf8NoBom)
     Write-Host "Fixed: $rel"
 }
 
