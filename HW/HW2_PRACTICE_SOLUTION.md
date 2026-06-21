@@ -70,13 +70,19 @@
 docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-| Member | Host | Role | State | TL | Lag |
-|--------|------|------|-------|----|-----|
-| patroni1 | 172.21.0.8 | Replica | streaming | 1 | 0 |
-| patroni2 | 172.21.0.6 | **Leader** | running | 1 | — |
-| patroni3 | 172.21.0.4 | Replica | streaming | 1 | 0 |
+**Вывод терминала:**
 
-Полный вывод сохранён в `screenshots/patronictl-list.txt`.
+```
++ Cluster: demo (7653826753696423958) --------+----+-------------+-----+------------+-----+
+| Member   | Host       | Role    | State     | TL | Receive LSN | Lag | Replay LSN | Lag |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+| patroni1 | 172.21.0.8 | Replica | streaming |  1 |   0/40456D8 |   0 |  0/40456D8 |   0 |
+| patroni2 | 172.21.0.6 | Leader  | running   |  1 |             |     |            |     |
+| patroni3 | 172.21.0.4 | Replica | streaming |  1 |   0/40456D8 |   0 |  0/40456D8 |   0 |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+```
+
+![patronictl list](screenshots/hw2-patronictl-list.png)
 
 **Выводы:**
 - Один **Leader** (patroni2) — единственный принимает write
@@ -89,13 +95,16 @@ docker exec demo-patroni1 python3 /patronictl.py list
 
 ```powershell
 Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing | Select-Object StatusCode
-# StatusCode: 200
 ```
 
-![HAProxy stats](screenshots/staatic_report_ha_proxy.png)
+```
+StatusCode : 200
+```
+
+![HAProxy stats](screenshots/hw2-haproxy-stats.png)
 
 **Выводы:**
-- Backend **primary** — UP только у текущего leader (patroni2), остальные DOWN с `503` (ожидаемо: не `/primary`)
+- Backend **primary** — UP только у текущего leader (patroni2, `L7OK/200`), остальные DOWN с `503`
 - Backend **replicas** — UP у patroni1 и patroni3, patroni2 DOWN (он leader, не replica)
 - HAProxy автоматически переключает backends при смене роли через confd + Patroni REST API
 
@@ -124,19 +133,54 @@ Port: 5001 (host и docker-сеть)
 
 Скрипт: `code\postgres-ha\init-schema.sql`
 
-Пролив на master (важно: порт **5000** внутри docker-сети, не 5001):
+Сначала ошибочно пролил на **replica** (порт 5001) — получил read-only:
+
+```powershell
+Get-Content init-schema.sql | docker exec -i -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres
+```
+
+```
+ERROR:  cannot execute CREATE TABLE in a read-only transaction
+ERROR:  cannot execute CREATE TABLE in a read-only transaction
+ERROR:  relation "owners" does not exist
+ERROR:  relation "events" does not exist
+```
+
+Правильно — на **master** (порт 5000):
 
 ```powershell
 Get-Content init-schema.sql | docker exec -i -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres
 ```
 
-Результат: `CREATE TABLE` ×2, `CREATE INDEX` ×3, `INSERT 0 3`, `INSERT 0 2` — без ERROR.
+```
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+COMMENT
+...
+INSERT 0 3
+INSERT 0 2
+```
 
 Проверка репликации:
 
 ```powershell
 docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT count(*) FROM events;"
 docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) FROM events;"
+```
+
+```
+ events_on_master
+------------------
+                2
+(1 row)
+
+ events_on_replica
+-------------------
+                 2
+(1 row)
 ```
 
 | Где | count(*) |
@@ -152,37 +196,77 @@ docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 
 
 ```powershell
 pip install psycopg2-binary
-cd code\postgres-ha
 python traffic-generator.py
 ```
 
-**Поведение:**
-- Каждую 1s: INSERT в `events`
-- Каждые 2s: SELECT последних 3 записей (`READ check`)
-- Подключается к `localhost:5002` (HAProxy primary / write endpoint)
+**Вывод терминала (окно с generator, старт):**
+
+```
+--- STARTING LOAD GENERATOR ON PORT 5002 ---
+
+[15:53:23] CONNECTED to Master Node
+[15:53:23] INSERT: logout by ...
+READ check (Last 3 IDs): [3, 2, 1]
+[15:53:24] INSERT: login by ...
+[15:53:25] INSERT: click by ...
+READ check (Last 3 IDs): [5, 4, 3]
+...
+[15:54:20] INSERT: view_page by ...
+READ check (Last 3 IDs): [59, 58, 57]
+```
+
+После ~1 мин генерации:
+
+```powershell
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SELECT count(*) FROM events;"
+docker exec -e PGPASSWORD=postgres demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres -c "SELECT count(*) FROM events;"
+```
+
+```
+ count
+-------
+    59
+(1 row)
+
+ count
+-------
+    59
+(1 row)
+```
 
 **Наблюдения:**
-- Старт: `[15:53:23] CONNECTED to Master Node`
-- ID событий монотонно растут: 1 → 3 → 5 → … → 59 (первая сессия, ~1 мин)
-- READ check показывает последние 3 ID без расхождений
-- После ~1 мин генерации: `count(*)` на master и replica = **59** (оба порта)
-- Вторая сессия (во время chaos): IDs до **379+**, INSERT продолжался, пока etcd/HAProxy были доступны
+- Пишет на `localhost:5002` (HAProxy primary), читает через `READ check` с master
+- ID монотонно растут, READ check показывает последние 3 ID без расхождений
+- count=59 на master и replica — репликация в реальном времени работает
 
 ---
 
 ## 6. Chaos Engineering — тесты отказоустойчивости
 
-`traffic-generator.py` работал в отдельном окне во время тестов.
+`traffic-generator.py` работал в отдельном окне PowerShell во время chaos-тестов.
 
 ### 6.1. Выключить реплику (не лидера)
 
 ```powershell
 docker stop demo-patroni2   # replica, leader = patroni3
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-**Наблюдения:**
-- Generator: INSERT продолжался без ошибок
-- `patronictl list`: patroni2 = `stopped`, patroni3 = Leader, patroni1 = streaming
+```
+| patroni1 | 172.21.0.8 | Replica | streaming |  2 |   0/40A3590 |   0 |  0/40A3590 |   0 |
+| patroni2 | 172.21.0.6 | Replica | stopped   |    |     unknown |     |    unknown |     |
+| patroni3 | 172.21.0.4 | Leader  | running   |  2 |             |     |            |     |
+```
+
+Generator — INSERT продолжался без ошибок:
+
+```
+[15:58:10] INSERT: view_page by ...
+[15:58:11] INSERT: click by ...
+READ check (Last 3 IDs): [141, 140, 139]
+```
+
+Восстановление:
 
 ```powershell
 docker start demo-patroni2
@@ -190,88 +274,116 @@ Start-Sleep -Seconds 30
 docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-После восстановления — все 3 ноды `streaming` / Leader, lag 0 (см. `screenshots/patronictl-recovery.txt`):
-
-| Member | Role | State | TL |
-|--------|------|-------|-----|
-| patroni1 | Replica | streaming | 2 |
-| patroni2 | Replica | streaming | 2 |
-| patroni3 | **Leader** | running | 2 |
+```
+| patroni1 | 172.21.0.8 | Replica | streaming |  2 |   0/40B14D0 |   0 |  0/40B14D0 |   0 |
+| patroni2 | 172.21.0.6 | Replica | streaming |  2 |   0/40B1678 |   0 |  0/40B1678 |   0 |
+| patroni3 | 172.21.0.4 | Leader  | running   |  2 |             |     |            |     |
+```
 
 ---
 
 ### 6.2. Выключить лидера (failover)
 
-Первый failover произошёл при остановке **patroni2** (был Leader):
-
 ```powershell
-docker stop demo-patroni2
+docker stop demo-patroni2   # был Leader
 docker start demo-patroni2
+Start-Sleep -Seconds 30
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-**Наблюдения:**
-- Leader сменился: **patroni2 → patroni3**
-- Timeline увеличился: TL **1 → 2**
-- Generator: кратковременный `CONNECTION LOST`, затем `CONNECTED to Master Node` (~15:56:52)
-- После failover INSERT возобновился
+**До failover** (patroni2 = Leader, TL=1):
 
-Остановка **patroni1** (replica) при leader = patroni3:
+```
+| patroni2 | 172.21.0.6 | Leader  | running   |  1 |             |     |            |     |
+```
+
+**После failover** (patroni3 = Leader, TL=2):
+
+```
+| patroni1 | 172.21.0.8 | Replica | streaming |  2 |   0/4098840 |   0 |  0/4098840 |   0 |
+| patroni2 | 172.21.0.6 | Replica | streaming |  2 |   0/4098840 |   0 |  0/4098840 |   0 |
+| patroni3 | 172.21.0.4 | Leader  | running   |  2 |             |     |            |     |
+```
+
+Generator при падении leader:
+
+```
+[15:55:11] Connection failed: connection to server at "localhost" (::1), port 5002 failed: server closed the connection unexpectedly
+[15:55:13] Connection failed: ...
+```
+
+После failover — переподключился:
+
+```
+[15:56:52] CONNECTED to Master Node
+[15:56:52] INSERT: login by ...
+READ check (Last 3 IDs): [69, 59, 58]
+```
+
+Остановка **patroni1** (replica, leader = patroni3):
 
 ```powershell
 docker stop demo-patroni1
+docker exec demo-patroni2 python3 /patronictl.py list
 ```
 
-| patroni1 | stopped |
-| patroni2 | Replica, streaming |
-| patroni3 | **Leader**, running |
+```
+| patroni1 | 172.21.0.8 | Replica | stopped   |    |     unknown |     |    unknown |     |
+| patroni2 | 172.21.0.6 | Replica | streaming |  2 |   0/40B7708 |   0 |  0/40B7708 |   0 |
+| patroni3 | 172.21.0.4 | Leader  | running   |  2 |             |     |            |     |
+```
 
 Generator продолжал INSERT — падение replica не влияет на write.
-
-```powershell
-docker start demo-patroni1
-```
-
-Состояние при остановленной patroni1 (`screenshots/patronictl-failover.txt`):
-
-| Member | Role | State |
-|--------|------|-------|
-| patroni1 | Replica | **stopped** |
-| patroni2 | Replica | streaming |
-| patroni3 | **Leader** | running |
 
 ---
 
 ### 6.3. Выключить etcd ноды
 
-**Одна etcd:**
+**Одна etcd (кворум 2/3 сохранён):**
 
 ```powershell
 docker stop demo-etcd1
 docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-**Наблюдения:**
-- Кворум 2/3 сохранён — кластер работает
-- `patronictl` выдал WARNING про etcd1, но список нод получен
-- patroni3 = Leader, реплики streaming
-- Generator: INSERT продолжался
+```
+2026-06-21 13:01:35,033 - WARNING - failed to resolve host etcd1: [Errno -5] No address associated with hostname
+...
+| patroni1 | 172.21.0.8 | Replica | streaming |  2 |   0/40CC8B8 |   0 |  0/40CC8B8 |   0 |
+| patroni2 | 172.21.0.6 | Replica | streaming |  2 |   0/40CC8B8 |   0 |  0/40CC8B8 |   0 |
+| patroni3 | 172.21.0.4 | Leader  | running   |  2 |             |     |            |     |
+```
+
+Generator — INSERT без пауз (~15:59–16:01).
 
 **Две etcd (потеря кворума):**
 
 ```powershell
 docker stop demo-etcd1
 docker stop demo-etcd2
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-**Наблюдения:**
-- `patronictl list` → `Etcd is not responding properly`
-- Generator (16:02:13): `CONNECTION LOST (Failover in progress?)`
-- Затем ~40 сек: `session is read-only`, `server closed the connection`
-- Failover через DCS невозможен без кворума — ожидаемое поведение Patroni
+```
+2026-06-21 13:02:06,496 - ERROR - get_cluster
+...
+etcd.EtcdConnectionFailed: No more machines in the cluster
+...
+patroni.dcs.etcd3.Etcd3Error: Etcd is not responding properly
+```
 
-```powershell
-docker start demo-etcd1 demo-etcd2
-Start-Sleep -Seconds 15
+Generator (16:02:13 — одновременно с падением etcd):
+
+```
+[16:02:12] INSERT: click by ...
+READ check (Last 3 IDs): [379, 378, 377]
+
+[16:02:13] CONNECTION LOST (Failover in progress?): could not receive data from server: Software caused connection abort
+
+[16:02:14] Connection failed: connection to server at "localhost" (::1), port 5002 failed: session is read-only
+[16:02:15] Connection failed: ... session is read-only
+...
+[16:02:19] Connection failed: ... server closed the connection unexpectedly
 ```
 
 ---
@@ -282,10 +394,13 @@ Start-Sleep -Seconds 15
 docker stop demo-haproxy
 ```
 
-**Наблюдения:**
-- Generator: `Connection refused` на `localhost:5002` (с 16:05:24)
-- Клиент полностью потерял доступ к БД, хотя PostgreSQL и Patroni продолжали работать
-- `patronictl` внутри контейнера при этом доступен
+Generator (16:05:24):
+
+```
+[16:05:24] Connection failed: connection to server at "localhost" (::1), port 5002 failed: Connection refused (0x0000274D/10061)
+        Is the server running on that host and accepting TCP/IP connections?
+connection to server at "localhost" (127.0.0.1), port 5002 failed: Connection refused (0x0000274D/10061)
+```
 
 **Как избежать в продакшене:**
 1. **2+ HAProxy** с Keepalived (VIP floating)
@@ -312,15 +427,14 @@ docker stop demo-haproxy
 
 http://localhost:3000 (admin/admin)
 
-![Postgres Overview](screenshots/postgres.png)
+![Postgres Overview](screenshots/hw2-grafana-postgres.png)
 
 **Наблюдения (15:37–16:00, во время generator + chaos-тестов):**
 - **QPS** ~9 — нагрузка от traffic-generator (INSERT + READ)
-- **Rows inserted** — ступенчатый рост (до ~1.2/s на пиках), **returned/fetched** — READ check каждые 2s
+- **Rows inserted** — ступенчатый рост, **returned/fetched** — READ check каждые 2s
 - **Active connections** — 4–5 (generator + psql + exporter)
 - **Cache hit ratio** — ~98.7% → 99.3%, без деградации
 - **Deadlocks / conflicts** — 0
-- Во время failover и падения etcd видны кратковременные провалы активности (согласуется с логами generator §5–6)
 
 ---
 

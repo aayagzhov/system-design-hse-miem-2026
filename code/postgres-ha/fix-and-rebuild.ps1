@@ -51,7 +51,7 @@ if (-not (Test-VendorDeps)) {
 }
 
 if (-not (Test-VendorDeps)) {
-    throw "vendor\etcd.tar.gz or vendor\confd invalid. See HW/log_instruction.md"
+    throw "vendor\etcd.tar.gz or vendor\confd invalid. Download etcd.tar.gz and confd into patroni-master\vendor\ (see course materials)."
 }
 Write-Host "   OK: vendor deps ready"
 

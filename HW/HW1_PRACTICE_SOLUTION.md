@@ -197,7 +197,7 @@ p95 ниже (462 ms), но error rate намного выше. GET через *
 
 **k6 Prometheus:**
 
-![k6 Prometheus — все прогоны, Last 15 min](screenshots/grafana-k6-prometheus.png)
+![k6 Prometheus — все прогоны, Last 15 min](screenshots/hw1-k6-prometheus.png)
 
 - На overview VU доходили до **~200**, около 10:36:30 снизились до **~100**
 - Peak RPS: **3.95k req/s** (пики около 10:37–10:39)
@@ -207,7 +207,7 @@ p95 ниже (462 ms), но error rate намного выше. GET через *
 
 **PostgreSQL:**
 
-![Postgres Overview — connections и rows](screenshots/grafana-postgres-overview.png)
+![Postgres Overview — connections и rows](screenshots/hw1-postgres-overview.png)
 
 - Первый всплеск rows (10:30–10:34): returned/fetched до **~184K**, inserted max **1.38K** (avg **206**)
 - Active connections в первом пике (10:32:30): **~70–75**
@@ -217,7 +217,7 @@ p95 ниже (462 ms), но error rate намного выше. GET через *
 
 **CPU хоста:**
 
-![Node Exporter — CPU/Memory](screenshots/grafana-node-exporter.png)
+![Node Exporter — CPU/Memory](screenshots/hw1-node-exporter.png)
 
 - CPU Busy: первый пик **~90%** (10:32–10:34), второй **~95–100%** (10:37–10:39)
 - RAM Used: **22.9%** (1.86 GiB из 7 GiB)
