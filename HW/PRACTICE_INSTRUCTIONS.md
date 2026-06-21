@@ -167,66 +167,80 @@ docker compose down
 
 Браузер не обязателен: `patronictl`, SQL и HAProxy — через терминал. Скриншоты для отчёта можно сделать из вывода терминала или сохранённого HTML.
 
+> **Windows:** если `patronictl list` пишет `python3\r` — используй `python3 /patronictl.py list` (см. шаг 3). Все команды и troubleshooting — в этом файле.
+
 ---
 
-## Шаг 1. Собери образ Patroni (первый раз, 5–15 мин)
+## Шаг 1. Собери образ и подними кластер (Windows)
 
-**Окно 1:**
+**Окно 1** — одна команда (рекомендуется):
 
 ```powershell
-cd C:\Users\ТВОЙ_ЮЗЕР\Study\system-design-hse-miem-2026\code\postgres-ha\patroni-master
+cd C:\Users\ТВОЙ_ЮЗЕР\Study\system-design-hse-miem-2026\code\postgres-ha
+.\fix-and-rebuild.ps1
 ```
 
-Если `docker build` падает с `TLS handshake timeout` на `postgres:17`, используй уже скачанный образ из HW1:
+Скрипт сам: `git pull` → `core.autocrlf false` → LF в `.sh`/`.py` → проверка `vendor\` → **offline build** (`Dockerfile.offline`) → `docker compose up` → проверка кластера.
+
+Ждать **5–15 мин** (первый `--no-cache` build долгий).
+
+### Если нет файлов в `vendor\`
+
+Папка: `code\postgres-ha\patroni-master\vendor\`
+
+| Файл | Откуда |
+|------|--------|
+| `etcd.tar.gz` | https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz |
+| `confd` (без расширения) | https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 |
+
+`confd` уже лежит в git — после `git pull` он появится сам. `etcd.tar.gz` обычно скачивается скриптом на Windows; если curl падает — скачай в браузере (VPN).
+
+Проверка:
 
 ```powershell
-docker build --build-arg PG_MAJOR=15 -t patroni .
+dir patroni-master\vendor
+# etcd.tar.gz  ~10 MB
+# confd          ~6 MB
 ```
 
-Если падает на **etcd/confd** (`gzip: unexpected end of file` — GitHub оборвал скачивание):
+Потом снова `.\fix-and-rebuild.ps1`.
 
-**Вариант A — повторить build** (в Dockerfile добавлены retry, подтяни свежий код):
+### Ручная сборка (если нужно по шагам)
 
 ```powershell
+cd code\postgres-ha
 git pull
-docker build --build-arg PG_MAJOR=15 -t patroni .
-```
-
-**Вариант B — офлайн-сборка** (только если обычный build падает на etcd; нужны **оба** файла в `vendor\`):
-
-```powershell
-.\download-deps.ps1
-# если curl падает — скачай в браузере (VPN) и положи в vendor\:
-#   etcd-v3.3.13-linux-amd64.tar.gz  ->  vendor\etcd.tar.gz
-#   confd-0.16.0-linux-amd64         ->  vendor\confd
-dir vendor
+git config core.autocrlf false
+.\fix-line-endings.ps1
+cd patroni-master
 docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
+cd ..
+docker compose down
+docker compose up -d
+Start-Sleep -Seconds 90
+docker ps
 ```
 
-**Обычно офлайн не нужен** — если раньше `docker build --build-arg PG_MAJOR=15` уже прошёл, используй обычный Dockerfile + `fix-line-endings.ps1`.
-
-Иначе:
+### Сбор логов (если что-то упало)
 
 ```powershell
-docker build -t patroni .
+cd code\postgres-ha
+.\collect-cluster-debug.ps1
 ```
 
-Дождись `Successfully tagged patroni:latest`.
+Файл: `HW\cluster-debug.txt`. На Mac: `git pull` и разбор с ассистентом.
 
 ---
 
-## Шаг 2. Запусти кластер
-
-```powershell
-cd ..
-docker compose up -d
-```
-
-Подожди **60–90 секунд**, проверь контейнеры:
+## Шаг 2. Проверь контейнеры
 
 ```powershell
 docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 ```
+
+Должны быть **Up**: `demo-etcd1/2/3`, `demo-patroni1/2/3`, `demo-haproxy` (порты 5001, 5002, 7001), grafana, prometheus.
+
+Если только grafana/prometheus Up — см. [§ Troubleshooting HW2](#troubleshooting-hw2-windows) ниже.
 
 ---
 
@@ -236,12 +250,32 @@ docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 docker exec demo-patroni1 patronictl list
 ```
 
+Если ошибка `env: 'python3\r': No such file or directory` — CRLF в Python-файлах, но **кластер уже работает**. Используй:
+
+```powershell
+docker exec demo-patroni1 python3 /patronictl.py list
+```
+
+Починить `patronictl` навсегда (быстрый rebuild без `--no-cache`):
+
+```powershell
+cd code\postgres-ha
+git pull
+.\fix-line-endings.ps1
+cd patroni-master
+docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
+cd ..
+docker compose up -d --force-recreate demo-patroni1 demo-patroni2 demo-patroni3
+Start-Sleep -Seconds 60
+docker exec demo-patroni1 patronictl list
+```
+
 Ожидаешь: **1 Leader**, **2 Replica** в состоянии `running` / `streaming`.
 
 Сохрани вывод в файл (удобно для отчёта):
 
 ```powershell
-docker exec demo-patroni1 patronictl list | Out-File ..\..\..\HW\screenshots\patronictl-list.txt -Encoding utf8
+docker exec demo-patroni1 python3 /patronictl.py list | Out-File ..\..\HW\screenshots\patronictl-list.txt -Encoding utf8
 ```
 
 Скриншот терминала или этот `.txt` — в отчёт §2.
@@ -249,8 +283,8 @@ docker exec demo-patroni1 patronictl list | Out-File ..\..\..\HW\screenshots\pat
 Повторная проверка с любой ноды:
 
 ```powershell
-docker exec demo-patroni2 patronictl list
-docker exec demo-patroni3 patronictl list
+docker exec demo-patroni2 python3 /patronictl.py list
+docker exec demo-patroni3 python3 /patronictl.py list
 ```
 
 ---
@@ -528,20 +562,32 @@ docker compose down
 
 ### Если контейнеры `Exited (2)` и в логах `entrypoint.sh: Syntax error`
 
-Причина: Git на Windows подменил переносы строк в `entrypoint.sh` (CRLF вместо LF).
+Причина: Git на Windows подменил переносы строк (CRLF вместо LF).
 
 ```powershell
 cd code\postgres-ha
-git config core.autocrlf false
-git pull
-.\fix-line-endings.ps1
-cd patroni-master
-docker build --build-arg PG_MAJOR=15 -t patroni .
-cd ..
-docker compose down
-docker compose up -d
-Start-Sleep -Seconds 90
-docker exec demo-patroni1 patronictl list
+.\fix-and-rebuild.ps1
+```
+
+---
+
+## Troubleshooting HW2 (Windows) {#troubleshooting-hw2-windows}
+
+| Симптом | Причина | Что делать |
+|---------|---------|------------|
+| `entrypoint.sh: Syntax error`, `Exited (2)` | CRLF в `entrypoint.sh` | `.\fix-and-rebuild.ps1` |
+| `env: 'python3\r'` при `patronictl list` | CRLF в `.py` | `python3 /patronictl.py list` или `fix-line-endings.ps1` + rebuild |
+| `TLS connect error` / `gzip: unexpected end of file` при build | GitHub недоступен из Docker | offline: `vendor\` + `Dockerfile.offline` (см. шаг 1) |
+| `vendor files missing` | нет `confd` или `etcd.tar.gz` | `git pull` (confd в git) + скачать etcd в `vendor\` |
+| `container is not running` | образ со старым CRLF | `.\fix-and-rebuild.ps1` |
+| Только grafana/prometheus Up | patroni/etcd упали | `docker logs demo-patroni1` → обычно CRLF |
+| `docker build` timeout на `postgres:17` | сеть | `--build-arg PG_MAJOR=15` |
+
+Сбор логов:
+
+```powershell
+cd code\postgres-ha
+.\collect-cluster-debug.ps1
 ```
 
 ---
@@ -576,9 +622,10 @@ Copy-Item HW\HW1.md 2\HW1.md
 | Grafana пустая | Datasource = `http://prometheus:9090` |
 | Порт 5001/5002 недоступен | `docker ps` — haproxy Up? Подожди 90 сек после `compose up` |
 | `psql` connection refused | Подключайся через `haproxy`, не напрямую в patroni: `-h haproxy -p 5001` |
-| `docker build` timeout | `docker build --build-arg PG_MAJOR=15 -t patroni .` |
-| `gzip: unexpected end of file` при build | GitHub оборвал etcd: `.\download-deps.ps1` затем `docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .` |
-| `entrypoint.sh: Syntax error` / `Exited (2)` | CRLF на Windows: см. ниже |
+| `docker build` timeout | `docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .` |
+| `gzip: unexpected end of file` / `TLS connect error` | GitHub в Docker: offline build + `vendor\` (шаг 1 HW2) |
+| `entrypoint.sh: Syntax error` / `Exited (2)` | `code\postgres-ha\fix-and-rebuild.ps1` |
+| `env: 'python3\r'` | `python3 /patronictl.py list` или `fix-line-endings.ps1` + rebuild |
 | Путь с пробелами | Возьми путь в кавычки: `cd "C:\Users\Имя\My Projects\..."` |
 
 ---
@@ -594,9 +641,9 @@ Copy-Item HW\HW1.md 2\HW1.md
 - [ ] `HW1_PRACTICE_SOLUTION.md` отправлен
 
 **Practice HW2:**
-- [ ] `docker build -t patroni .` (или `--build-arg PG_MAJOR=15`)
-- [ ] `docker compose up` в `code\postgres-ha`
-- [ ] `patronictl list` + HAProxy через терминал
+- [ ] `.\fix-and-rebuild.ps1` в `code\postgres-ha` (или offline build)
+- [ ] `docker compose up` — все контейнеры Up
+- [ ] `python3 /patronictl.py list` + HAProxy через терминал
 - [ ] SQL через `docker exec ... psql` + `init-schema.sql`
 - [ ] `python traffic-generator.py`
 - [ ] Chaos-тесты

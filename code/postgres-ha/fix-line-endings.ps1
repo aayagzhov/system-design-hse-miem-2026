@@ -1,21 +1,38 @@
-# Исправить CRLF -> LF перед docker build (Windows)
-# Запуск: .\fix-line-endings.ps1
+# Fix CRLF -> LF before docker build (Windows)
+# Run: .\fix-line-endings.ps1
 
-$files = @(
-    "patroni-master\docker\entrypoint.sh"
-)
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+$root = Join-Path $PSScriptRoot "patroni-master"
 
-foreach ($rel in $files) {
-    $path = Join-Path $PSScriptRoot $rel
-    if (-not (Test-Path $path)) {
-        Write-Warning "Not found: $path"
-        continue
+$patterns = @("*.sh", "*.py", "*.yml")
+$skipDirs = @("vendor", ".git", "__pycache__", "tests", "docs")
+
+$fixed = 0
+foreach ($pattern in $patterns) {
+    Get-ChildItem -Path $root -Filter $pattern -Recurse -File | ForEach-Object {
+        $skip = $false
+        foreach ($d in $skipDirs) {
+            if ($_.FullName -match [regex]::Escape([IO.Path]::DirectorySeparatorChar + $d + [IO.Path]::DirectorySeparatorChar)) {
+                $skip = $true
+                break
+            }
+        }
+        if ($skip) { return }
+
+        $bytes = [IO.File]::ReadAllBytes($_.FullName)
+        if ($bytes -notcontains 13) { return }
+
+        $text = [IO.File]::ReadAllText($_.FullName)
+        $newText = $text -replace "`r`n", "`n" -replace "`r", "`n"
+        [IO.File]::WriteAllText($_.FullName, $newText, $utf8NoBom)
+        $rel = $_.FullName.Substring($root.Length + 1)
+        Write-Host "Fixed: $rel"
+        $script:fixed++
     }
-    $text = [IO.File]::ReadAllText($path)
-    $fixed = $text -replace "`r`n", "`n" -replace "`r", "`n"
-    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
-    [IO.File]::WriteAllText($path, $fixed, $utf8NoBom)
-    Write-Host "Fixed: $rel"
 }
 
-Write-Host "Done. Rebuild: cd patroni-master; docker build --build-arg PG_MAJOR=15 -t patroni ."
+if ($fixed -eq 0) {
+    Write-Host "No CRLF found."
+} else {
+    Write-Host "Fixed $fixed file(s). Rebuild: cd patroni-master; docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni ."
+}
