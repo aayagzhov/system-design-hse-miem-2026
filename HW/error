@@ -1,56 +1,25 @@
-# Сейчас: скачать confd и запустить сборку (Windows)
+# Сейчас: confd в репозитории — pull на Windows и сборка
 
-etcd уже есть. Нужен только **confd**.
+`vendor/confd` уже в git (скачан на Mac). `etcd.tar.gz` на Windows уже должен быть локально (~10 MB).
 
-## Шаг 1 — браузер (VPN если не открывается)
-
-Открыть и **Сохранить как**:
-
-https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64
-
-Путь и имя файла (без расширения!):
-
-```
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor\confd
-```
-
-## Шаг 2 — проверка
+## Windows — одна команда
 
 ```powershell
-dir C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026
+git pull
+
+cd code\postgres-ha
+.\fix-and-rebuild.ps1
 ```
 
-Должно быть:
-- `etcd.tar.gz`  ~10 MB
-- `confd`          ~10 MB
-
-## Шаг 3 — одна команда
+Если скрипт скажет что нет `etcd.tar.gz`:
 
 ```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha; .\fix-and-rebuild.ps1
+dir patroni-master\vendor
 ```
 
-Ждать ~5–10 мин. В конце — `patronictl list` с 3 нодами.
-
----
-
-## Если etcd тоже нет
-
-Скачать в браузере:
-
+Если нет etcd — скачать в браузере:
 https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
+→ `patroni-master\vendor\etcd.tar.gz`
 
-→ сохранить как `vendor\etcd.tar.gz`
-
-Потом шаг 3.
-
----
-
-## Сбор логов (если снова упадёт)
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
-.\collect-cluster-debug.ps1
-```
-
-Подробнее: `HW/log_instruction.md`
+Потом снова `.\fix-and-rebuild.ps1`
