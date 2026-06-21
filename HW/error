@@ -1,50 +1,103 @@
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build --build-arg PG_MAJOR=15 -t patroni .
-[+] Building 0.9s (16/16) FINISHED                                                                                                          docker:desktop-linux
- => [internal] load build definition from Dockerfile                                                                                                        0.1s
- => => transferring dockerfile: 9.00kB                                                                                                                      0.0s
- => [internal] load metadata for docker.io/library/postgres:15                                                                                              0.1s
- => [internal] load .dockerignore                                                                                                                           0.0s
- => => transferring context: 2B                                                                                                                             0.0s
- => [builder 1/3] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                0.1s
- => => resolve docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                        0.1s
- => [internal] load build context                                                                                                                           0.0s
- => => transferring context: 3.48kB                                                                                                                         0.0s
- => CACHED [builder 2/3] RUN set -ex     && export DEBIAN_FRONTEND=noninteractive     && echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' >  0.0s
- => CACHED [builder 3/3] RUN if [ "false" = "true" ]; then         set -ex         && echo 'postgres ALL=(ALL) NOPASSWD: /bin/tar xpJf /a.tar.xz -C /, /bi  0.0s
- => CACHED [stage-1 1/8] COPY --from=builder / /                                                                                                            0.0s
- => CACHED [stage-1 2/8] COPY patroni /patroni/                                                                                                             0.0s
- => CACHED [stage-1 3/8] COPY extras/confd/conf.d/haproxy.toml /etc/confd/conf.d/                                                                           0.0s
- => CACHED [stage-1 4/8] COPY extras/confd/templates/haproxy.tmpl /etc/confd/templates/                                                                     0.0s
- => CACHED [stage-1 5/8] COPY patroni*.py docker/entrypoint.sh /                                                                                            0.0s
- => CACHED [stage-1 6/8] COPY postgres?.yml /home/postgres/                                                                                                 0.0s
- => CACHED [stage-1 7/8] WORKDIR /home/postgres                                                                                                             0.0s
- => CACHED [stage-1 8/8] RUN sed -i 's/env python/&3/' /patroni*.py     && sed -i 's/^  listen: 127.0.0.1/  listen: 0.0.0.0/' postgres?.yml     && sed -i   0.0s
- => exporting to image                                                                                                                                      0.3s
- => => exporting layers                                                                                                                                     0.0s
- => => exporting manifest sha256:fed0c30afcaa9fb0db09772a71b308ac11d117725a720d97eb5fdb50c4e74600                                                           0.0s
- => => exporting config sha256:b0c9bfc70f515d8f5a50a672bbc42b53a9c9b7b174d409e053cae72960fedd4d                                                             0.0s
- => => exporting attestation manifest sha256:a7b22973e9040ac52e61ef31d6f5a79174033476474f5bb35f4ee4fb74d484b0                                               0.1s
- => => exporting manifest list sha256:4fdd8a48c6e6c376a79c045ba9b34163bf525d4736fb8f4d8019b4f96b273d0d                                                      0.0s
- => => naming to docker.io/library/patroni:latest                                                                                                           0.0s
- => => unpacking to docker.io/library/patroni:latest                                                                                                        0.0s
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> cd ..
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker compose up -d
-time="2026-06-21T14:41:25+03:00" level=warning msg="C:\\Users\\User\\CppProjects\\system-design-hse-miem-2026\\code\\postgres-ha\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
-[+] Running 10/10
- ✔ Container demo-etcd3                       Started                                                                                                       3.3s 
- ✔ Container demo-haproxy                     Started                                                                                                       4.6s 
- ✔ Container demo-patroni1                    Started                                                                                                       3.3s 
- ✔ Container demo-patroni2                    Started                                                                                                       4.5s 
- ✔ Container demo-etcd2                       Started                                                                                                       3.3s 
- ✔ Container demo-etcd1                       Started                                                                                                       4.3s 
- ✔ Container demo-patroni3                    Started                                                                                                       4.3s 
- ✔ Container postgres-ha-prometheus-1         Started                                                                                                       2.1s 
- ✔ Container postgres-ha-postgres_exporter-1  Started                                                                                                       2.1s 
- ✔ Container postgres-ha-grafana-1            Started                                                                                                       0.5s 
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
-NAMES                             STATUS         PORTS
-postgres-ha-grafana-1             Up 7 seconds   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
-postgres-ha-prometheus-1          Up 9 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
-postgres-ha-postgres_exporter-1   Up 9 seconds   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 patronictl list
-Error response from daemon: container 233fb6313a019a828cab5b91d7ce91b82b561793653fdfc081940e3df0037279 is not running
+# Сбор логов кластера (Windows PC)
+
+Выполни на ПК, где крутится Docker. Результат попадёт в `HW/cluster-debug.txt`.
+
+## Шаг 1 — открой PowerShell и перейди в проект
+
+```powershell
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
+```
+
+## Шаг 2 — скопируй и выполни целиком
+
+```powershell
+$out = Join-Path (Split-Path (Split-Path $PWD)) "HW\cluster-debug.txt"
+$lines = New-Object System.Collections.Generic.List[string]
+
+$lines.Add("=== cluster debug $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===")
+$lines.Add("")
+$lines.Add("=== docker ps -a ===")
+docker ps -a --format "table {{.Names}}`t{{.Status}}`t{{.Ports}}" | ForEach-Object { $lines.Add($_) }
+
+$containers = @(
+    "demo-patroni1", "demo-patroni2", "demo-patroni3",
+    "demo-etcd1", "demo-etcd2", "demo-etcd3",
+    "demo-haproxy"
+)
+
+foreach ($c in $containers) {
+    $lines.Add("")
+    $lines.Add("=== docker logs $c (last 50 lines) ===")
+    try {
+        docker logs $c 2>&1 | Select-Object -Last 50 | ForEach-Object { $lines.Add("$_) }
+    } catch {
+        $lines.Add("ERROR: $_")
+    }
+}
+
+$lines.Add("")
+$lines.Add("=== docker inspect demo-patroni1 (State) ===")
+docker inspect demo-patroni1 --format "{{.State.Status}} exit={{.State.ExitCode}} error={{.State.Error}}" 2>&1 | ForEach-Object { $lines.Add($_) }
+
+$lines.Add("")
+$lines.Add("=== entrypoint.sh — первые 16 байт (0d 0a = CRLF, 0a = LF) ===")
+$ep = Join-Path $PWD "patroni-master\docker\entrypoint.sh"
+if (Test-Path $ep) {
+    Format-Hex -Path $ep -Count 32 | ForEach-Object { $lines.Add($_.ToString()) }
+} else {
+    $lines.Add("NOT FOUND: $ep")
+}
+
+$lines.Add("")
+$lines.Add("=== docker images patroni ===")
+docker images patroni | ForEach-Object { $lines.Add($_) }
+
+$lines.Add("")
+$lines.Add("=== git core.autocrlf ===")
+git -C (Split-Path (Split-Path $PWD)) config core.autocrlf 2>&1 | ForEach-Object { $lines.Add($_) }
+
+$lines | Out-File -FilePath $out -Encoding utf8
+Write-Host ""
+Write-Host "OK: $out"
+Write-Host "Открой файл, проверь что там есть логи patroni/etcd."
+Write-Host "Дальше: git add HW/cluster-debug.txt && git commit && git push"
+```
+
+## Шаг 3 — закоммить и подтянуть на Mac
+
+```powershell
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026
+git add HW/cluster-debug.txt
+git commit -m "debug: patroni cluster logs"
+git push
+```
+
+На Mac:
+
+```bash
+git pull
+```
+
+Пришли сюда `@HW/cluster-debug.txt` или просто напиши «подтянул».
+
+---
+
+## Если контейнеры уже удалены
+
+Сначала подними кластер (чтобы были логи), подожди 30 сек, потом шаг 2:
+
+```powershell
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
+docker compose up -d
+Start-Sleep -Seconds 30
+# затем скрипт из шага 2
+```
+
+---
+
+## Предыдущая ошибка (для контекста)
+
+- `docker build` — OK (всё CACHED)
+- `docker compose up` — Started, но patroni/etcd/haproxy сразу упали
+- `docker ps` — только grafana, prometheus, postgres_exporter
+- `docker exec demo-patroni1 patronictl list` → `container is not running`
