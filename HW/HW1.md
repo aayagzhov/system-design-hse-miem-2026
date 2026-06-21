@@ -3,7 +3,7 @@
 **Кейс:** Architectural Kata — сервис объявлений (аналог Avito)  
 **Источник кейса:** [Architectural Katas](https://www.architecturalkatas.com)  
 **Контекст:** Россия, 2026 год  
-**Автор:** Аягжов
+**Автор:** Алексей Ягжов
 
 ---
 

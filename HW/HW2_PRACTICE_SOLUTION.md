@@ -1,6 +1,6 @@
 # Practice HW2 — Patroni PostgreSQL HA Cluster
 
-**Автор:** Аягжов  
+**Автор:** Алексей Ягжов  
 **Проект:** `code\postgres-ha`  
 **ОС:** Windows (PowerShell)  
 **Дата:** 21.06.2026
