@@ -1,17 +1,17 @@
-﻿=== cluster debug 2026-06-21 14:56:34 ===
+﻿=== cluster debug 2026-06-21 15:10:53 ===
 
 === docker ps -a ===
 NAMES                             STATUS                      PORTS
-demo-patroni3                     Exited (2) 15 minutes ago   
-demo-etcd2                        Exited (2) 15 minutes ago   
-demo-etcd3                        Exited (2) 15 minutes ago   
-demo-haproxy                      Exited (2) 15 minutes ago   
-demo-patroni1                     Exited (2) 15 minutes ago   
-demo-patroni2                     Exited (2) 15 minutes ago   
-demo-etcd1                        Exited (2) 15 minutes ago   
-postgres-ha-grafana-1             Up 15 minutes               0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
-postgres-ha-prometheus-1          Up 15 minutes               0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
-postgres-ha-postgres_exporter-1   Up 15 minutes               0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+demo-patroni3                     Exited (2) 29 minutes ago   
+demo-etcd2                        Exited (2) 29 minutes ago   
+demo-etcd3                        Exited (2) 29 minutes ago   
+demo-haproxy                      Exited (2) 29 minutes ago   
+demo-patroni1                     Exited (2) 29 minutes ago   
+demo-patroni2                     Exited (2) 29 minutes ago   
+demo-etcd1                        Exited (2) 29 minutes ago   
+postgres-ha-grafana-1             Up 29 minutes               0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+postgres-ha-prometheus-1          Up 29 minutes               0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+postgres-ha-postgres_exporter-1   Up 29 minutes               0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
 bd_postgres_19-postgres-1         Exited (255) 29 hours ago   0.0.0.0:5433->5432/tcp
 db-postgres-1                     Exited (255) 29 hours ago   0.0.0.0:5432->5432/tcp
 
@@ -54,13 +54,12 @@ db-postgres-1                     Exited (255) 29 hours ago   0.0.0.0:5432->5432
 exited exit=2 error=
 
 === entrypoint.sh hex - 0d0a means CRLF ===
-23 21 2F 62 69 6E 2F 73 68 0D 0A 0D 0A 69 66 20 5B 20 2D 66 20 2F 61 2E 74 61 72 2E 78 7A 20 5D
-CRLF detected - run fix-line-endings.ps1 and rebuild with --no-cache
+23 21 2F 62 69 6E 2F 73 68 0A 0A 69 66 20 5B 20 2D 66 20 2F 61 2E 74 61 72 2E 78 7A 20 5D 3B 20
 
 === docker images patroni ===
 IMAGE            ID             DISK USAGE   CONTENT SIZE   EXTRA
 patroni:latest   4fdd8a48c6e6        743MB          190MB   U    
 
 === git core.autocrlf ===
-true
+false
 
