@@ -165,15 +165,41 @@ docker compose down
 - **Окно 2** — `traffic-generator.py` (не закрывать во время chaos-тестов)
 - **Окно 3** — chaos-тесты
 
-Браузер не обязателен: `patronictl`, SQL и HAProxy — через терминал. Скриншоты для отчёта можно сделать из вывода терминала или сохранённого HTML.
+---
 
-> **Windows:** если `patronictl list` пишет `python3\r` — используй `python3 /patronictl.py list` (см. шаг 3). Все команды и troubleshooting — в этом файле.
+## Кластер уже Up? Начни отсюда
+
+Если `docker ps` показывает **Up** для `demo-patroni1/2/3`, `demo-etcd1/2/3`, `demo-haproxy` — **шаг 1 пропускай**, иди по порядку:
+
+| # | Действие | Команда |
+|---|----------|---------|
+| 1 | Проверить кластер | см. **Шаг 3** |
+| 2 | SQL + репликация | **Шаг 5** |
+| 3 | Генератор нагрузки | **Шаг 6** (Окно 2) |
+| 4 | Chaos-тесты | **Шаг 7** (Окно 3) |
+| 5 | Отчёт | **Шаг 10** → `HW2_PRACTICE_SOLUTION.md` |
 
 ---
 
-## Шаг 1. Собери образ и подними кластер (Windows)
+## Команда `patronictl` на Windows (важно)
 
-**Окно 1** — одна команда (рекомендуется):
+На Windows **`patronictl list` часто не работает** (`env: 'python3\r'`). Это не ломает кластер.
+
+**Во всей инструкции используй так:**
+
+```powershell
+docker exec demo-patroni1 python3 /patronictl.py list
+```
+
+Для других нод — замени `demo-patroni1` на `demo-patroni2` или `demo-patroni3`.
+
+---
+
+## Шаг 1. Собери образ и подними кластер (первый раз)
+
+> **Кластер уже Up?** Пропусти этот шаг → [Кластер уже Up?](#кластер-уже-up-начни-отсюда)
+
+**Окно 1** — одна команда:
 
 ```powershell
 cd C:\Users\ТВОЙ_ЮЗЕР\Study\system-design-hse-miem-2026\code\postgres-ha
@@ -244,19 +270,31 @@ docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
 ---
 
-## Шаг 3. Состояние кластера (`patronictl list`)
-
-```powershell
-docker exec demo-patroni1 patronictl list
-```
-
-Если ошибка `env: 'python3\r': No such file or directory` — CRLF в Python-файлах, но **кластер уже работает**. Используй:
+## Шаг 3. Состояние кластера
 
 ```powershell
 docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
-Починить `patronictl` навсегда (быстрый rebuild без `--no-cache`):
+Ожидаешь: **1 Leader**, **2 Replica** в состоянии `running` / `streaming`.
+
+Пример (у тебя сейчас): **patroni1 = Leader**, patroni2 и patroni3 = Replica.
+
+Сохрани вывод в файл (для отчёта §2):
+
+```powershell
+docker exec demo-patroni1 python3 /patronictl.py list | Out-File ..\..\HW\screenshots\patronictl-list.txt -Encoding utf8
+```
+
+Проверка с других нод:
+
+```powershell
+docker exec demo-patroni2 python3 /patronictl.py list
+docker exec demo-patroni3 python3 /patronictl.py list
+```
+
+<details>
+<summary>Опционально: починить команду patronictl (rebuild, ~5 мин)</summary>
 
 ```powershell
 cd code\postgres-ha
@@ -270,22 +308,7 @@ Start-Sleep -Seconds 60
 docker exec demo-patroni1 patronictl list
 ```
 
-Ожидаешь: **1 Leader**, **2 Replica** в состоянии `running` / `streaming`.
-
-Сохрани вывод в файл (удобно для отчёта):
-
-```powershell
-docker exec demo-patroni1 python3 /patronictl.py list | Out-File ..\..\HW\screenshots\patronictl-list.txt -Encoding utf8
-```
-
-Скриншот терминала или этот `.txt` — в отчёт §2.
-
-Повторная проверка с любой ноды:
-
-```powershell
-docker exec demo-patroni2 python3 /patronictl.py list
-docker exec demo-patroni3 python3 /patronictl.py list
-```
+</details>
 
 ---
 
@@ -417,14 +440,14 @@ docker exec demo-patroni1 psql -U postgres -h haproxy -p 5000 -d postgres -c "SE
 
 ## Шаг 7. Chaos-тесты (Окно 3)
 
-`traffic-generator` в Окне 2 **не останавливай**. После каждого шага смотри логи generator и выполняй `patronictl list`.
+`traffic-generator` в Окне 2 **не останавливай**. После каждого шага смотри логи generator и выполняй `python3 /patronictl.py list`.
 
 ### 7.1. Выключить реплику (не лидера)
 
 ```powershell
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 docker stop demo-patroni2
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 Подожди ~30 сек, смотри generator — INSERT должен продолжаться.
@@ -434,19 +457,19 @@ docker exec demo-patroni1 patronictl list
 ```powershell
 docker start demo-patroni2
 Start-Sleep -Seconds 30
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 Сохрани вывод:
 
 ```powershell
-docker exec demo-patroni1 patronictl list | Out-File ..\..\HW\screenshots\patronictl-recovery.txt -Encoding utf8
+docker exec demo-patroni1 python3 /patronictl.py list | Out-File ..\..\HW\screenshots\patronictl-recovery.txt -Encoding utf8
 ```
 
 ### 7.2. Выключить лидера (failover)
 
 ```powershell
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 Запомни, кто **Leader**. Останови его (пример — если leader `patroni1`):
@@ -458,13 +481,13 @@ docker stop demo-patroni1
 Смотри generator: ошибки connection **10–30 сек**, потом снова INSERT.
 
 ```powershell
-docker exec demo-patroni2 patronictl list
+docker exec demo-patroni2 python3 /patronictl.py list
 ```
 
 Кто стал новым Leader — в отчёт. Сохрани:
 
 ```powershell
-docker exec demo-patroni2 patronictl list | Out-File ..\..\HW\screenshots\patronictl-failover.txt -Encoding utf8
+docker exec demo-patroni2 python3 /patronictl.py list | Out-File ..\..\HW\screenshots\patronictl-failover.txt -Encoding utf8
 ```
 
 Верни старого лидера (вернётся как Replica):
@@ -472,14 +495,14 @@ docker exec demo-patroni2 patronictl list | Out-File ..\..\HW\screenshots\patron
 ```powershell
 docker start demo-patroni1
 Start-Sleep -Seconds 30
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 ### 7.3. Выключить одну etcd-ноду
 
 ```powershell
 docker stop demo-etcd1
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 Кластер должен работать (кворум 2/3). Generator пишет/читает.
@@ -493,7 +516,7 @@ docker start demo-etcd1
 ```powershell
 docker stop demo-etcd1
 docker stop demo-etcd2
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 Failover невозможен, но текущий leader может ещё принимать write. Смотри generator.
@@ -501,7 +524,7 @@ Failover невозможен, но текущий leader может ещё пр
 ```powershell
 docker start demo-etcd1 demo-etcd2
 Start-Sleep -Seconds 15
-docker exec demo-patroni1 patronictl list
+docker exec demo-patroni1 python3 /patronictl.py list
 ```
 
 ### 7.5. Выключить HAProxy
@@ -551,7 +574,7 @@ docker compose down
 ## Шаг 10. Заполни отчёт
 
 `HW\HW2_PRACTICE_SOLUTION.md`:
-- §2 — вывод `patronictl list`
+- §2 — вывод `python3 /patronictl.py list`
 - §3 — HAProxy (терминал или `haproxy-stats.html`)
 - §4.3 — `count(*)` master и replica
 - §5 — наблюдения traffic-generator
