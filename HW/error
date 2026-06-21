@@ -1,38 +1,56 @@
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> .\fix-and-rebuild.ps1      
-0/8 git pull
-Already up to date.
-1/8 git config core.autocrlf false
-2/8 fix entrypoint.sh CRLF -> LF
-Fixed: patroni-master\docker\entrypoint.sh
-Done. Rebuild: cd patroni-master; docker build --build-arg PG_MAJOR=15 -t patroni .
-   hex: 23 21 2F 62 69 6E 2F 73 68 0A 0A 69 66 20 5B 20
-   OK: LF line endings
-3/8 vendor deps for offline build
-   downloading etcd + confd on Windows...
-Downloading C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor\etcd.tar.gz ...
-  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
-                                 Dload  Upload  Total   Spent   Left   Speed
-  0      0   0      0   0      0      0      0           00:38              0
-  0      0   0      0   0      0      0      0           00:39              0
-100  9.94M 100  9.94M   0      0 146.3k      0   01:09   01:09         722.2k
-Downloading C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor\confd ...
-  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
-                                 Dload  Upload  Total   Spent   Left   Speed
-  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0           00:18              0
-curl: (35) Recv failure: Connection was reset
-   download failed: Download failed: https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 (curl exit 35). Try VPN, mobilehotspot, or download in browser.
+# Сейчас: скачать confd и запустить сборку (Windows)
 
-   Download in browser and save to patroni-master\vendor\ :
-   etcd:  https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
-          -> vendor\etcd.tar.gz
-   confd: https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64
-          -> vendor\confd   (no extension!)
-vendor files missing. Use VPN or browser download, then run again.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\fix-and-rebuild.ps1:49 знак:9
-+         throw "vendor files missing. Use VPN or browser download, the ...
-+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : OperationStopped: (vendor files mi...then run again.:String) [], RuntimeException
-    + FullyQualifiedErrorId : vendor files missing. Use VPN or browser download, then run again.
- 
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 
+etcd уже есть. Нужен только **confd**.
+
+## Шаг 1 — браузер (VPN если не открывается)
+
+Открыть и **Сохранить как**:
+
+https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64
+
+Путь и имя файла (без расширения!):
+
+```
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor\confd
+```
+
+## Шаг 2 — проверка
+
+```powershell
+dir C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\vendor
+```
+
+Должно быть:
+- `etcd.tar.gz`  ~10 MB
+- `confd`          ~10 MB
+
+## Шаг 3 — одна команда
+
+```powershell
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha; .\fix-and-rebuild.ps1
+```
+
+Ждать ~5–10 мин. В конце — `patronictl list` с 3 нодами.
+
+---
+
+## Если etcd тоже нет
+
+Скачать в браузере:
+
+https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
+
+→ сохранить как `vendor\etcd.tar.gz`
+
+Потом шаг 3.
+
+---
+
+## Сбор логов (если снова упадёт)
+
+```powershell
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
+.\collect-cluster-debug.ps1
+```
+
+Подробнее: `HW/log_instruction.md`
