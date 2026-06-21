@@ -74,29 +74,31 @@ Start-Sleep -Seconds 30
 
 ## Исправление CRLF (если в логах `entrypoint.sh: Syntax error`)
 
-Один скрипт — всё сам:
+**Важно:** после `--no-cache` обычный Dockerfile качает etcd с GitHub **внутри** Docker — у тебя это падает с `TLS connect error`. Используй offline-сборку.
+
+### Шаг A — скачать etcd + confd на Windows (браузер или VPN)
+
+Положить в `code\postgres-ha\patroni-master\vendor\`:
+
+| Файл | URL |
+|------|-----|
+| `etcd.tar.gz` | https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz |
+| `confd` (без расширения) | https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 |
+
+Или:
 
 ```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026
-git pull
-
-cd code\postgres-ha
-.\fix-and-rebuild.ps1
+cd code\postgres-ha\patroni-master
+.\download-deps.ps1
+dir vendor
 ```
 
-Скрипт: `core.autocrlf false` → LF в entrypoint → `docker build --no-cache` → `compose up` → `patronictl list`.
-
-Вручную (если нужно по шагам):
+## Одна команда (Windows)
 
 ```powershell
-git config core.autocrlf false
-cd code\postgres-ha
-.\fix-line-endings.ps1
-cd patroni-master
-docker build --no-cache --build-arg PG_MAJOR=15 -t patroni .
-cd ..
-docker compose down
-docker compose up -d
-Start-Sleep -Seconds 90
-docker exec demo-patroni1 patronictl list
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha; .\fix-and-rebuild.ps1
 ```
+
+Скрипт сам: `git pull` → LF → скачать vendor → offline build → `compose up` → `patronictl list`.
+
+Если на шаге vendor curl упадёт — **один раз** скачай в браузере в `patroni-master\vendor\` (см. таблицу ниже) и запусти **ту же команду** снова.
