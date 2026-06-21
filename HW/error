@@ -1,82 +1,52 @@
- C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build --build-arg PG_MAJOR=15 -t patroni .
-[+] Building 172.3s (16/16) FINISHED                                                                                                        docker:desktop-linux
- => [internal] load build definition from Dockerfile                                                                                                        0.0s
- => => transferring dockerfile: 9.00kB                                                                                                                      0.0s
+  22 |     
+  23 |     RUN set -ex \
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref wc0r6f97fia3wso2lev97rgml::djcp286eofmxtgxy3h6kaplro: "/vendor/confd": not found
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
+>> 
+Downloading etcd...
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0           00:18              0
+curl: (35) Recv failure: Connection was reset
+Downloading confd...
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0           00:18              0
+curl: (35) Recv failure: Connection was reset
+OK: vendor\etcd.tar.gz (8502782 bytes), vendor\confd
+Next: docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
+
+[+] Building 0.4s (7/17)                                                                                                                    docker:desktop-linux
+ => [internal] load build definition from Dockerfile.offline                                                                                                0.0s
+ => => transferring dockerfile: 8.05kB                                                                                                                      0.0s
  => WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)                                                                             0.0s
  => [internal] load metadata for docker.io/library/postgres:15                                                                                              0.1s
  => [internal] load .dockerignore                                                                                                                           0.0s
  => => transferring context: 2B                                                                                                                             0.0s
- => CACHED [builder 1/3] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                         0.1s
+ => CACHED [builder 1/5] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                         0.1s
  => => resolve docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                        0.1s
  => [internal] load build context                                                                                                                           0.1s
- => => transferring context: 3.48kB                                                                                                                         0.0s
- => [builder 2/3] RUN set -ex     && export DEBIAN_FRONTEND=noninteractive     && echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > /etc  115.1s
- => [builder 3/3] RUN if [ "false" = "true" ]; then         set -ex         && echo 'postgres ALL=(ALL) NOPASSWD: /bin/tar xpJf /a.tar.xz -C /, /bin/rm /a  0.0s 
- => [stage-1 1/8] COPY --from=builder / /                                                                                                                   6.6s 
- => [stage-1 2/8] COPY patroni /patroni/                                                                                                                    1.3s 
- => [stage-1 3/8] COPY extras/confd/conf.d/haproxy.toml /etc/confd/conf.d/                                                                                  0.1s 
- => [stage-1 4/8] COPY extras/confd/templates/haproxy.tmpl /etc/confd/templates/                                                                            0.1s
- => [stage-1 5/8] COPY patroni*.py docker/entrypoint.sh /                                                                                                   0.1s
- => [stage-1 6/8] COPY postgres?.yml /home/postgres/                                                                                                        0.1s
- => [stage-1 7/8] WORKDIR /home/postgres                                                                                                                    0.1s
- => [stage-1 8/8] RUN sed -i 's/env python/&3/' /patroni*.py     && sed -i 's/^  listen: 127.0.0.1/  listen: 0.0.0.0/' postgres?.yml     && sed -i "s|^\(   0.6s
- => exporting to image                                                                                                                                     41.1s
- => => exporting layers                                                                                                                                    30.1s
- => => exporting manifest sha256:fed0c30afcaa9fb0db09772a71b308ac11d117725a720d97eb5fdb50c4e74600                                                           0.0s
- => => exporting config sha256:b0c9bfc70f515d8f5a50a672bbc42b53a9c9b7b174d409e053cae72960fedd4d                                                             0.0s
- => => exporting attestation manifest sha256:8d846442aed42cccad6c48bb67c77c0e696ce614899638e85c1da0ac3c6b8d37                                               0.1s
- => => exporting manifest list sha256:ad4e98080da87560f63acb89f4335463c077127d30004ba588cf69f9f02c58b0                                                      0.0s
- => => naming to docker.io/library/patroni:latest                                                                                                           0.0s
- => => unpacking to docker.io/library/patroni:latest                                                                                                       10.8s
+ => => transferring context: 3.55kB                                                                                                                         0.0s
+ => CACHED [builder 2/5] COPY vendor/etcd.tar.gz /tmp/etcd.tar.gz                                                                                           0.0s
+ => ERROR [builder 3/5] COPY vendor/confd /tmp/confd                                                                                                        0.0s
+------
+ > [builder 3/5] COPY vendor/confd /tmp/confd:
+------
 
  1 warning found (use docker --debug to expand):
  - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:76
-+ ... ѕРј РјР°Р»РµРЅСЊРєРёР№ ($size bytes) вЂ” СЃРєР°С‡РёРІР°РЅРёРµ РѕР±РѕС ...
-+                                              ~~~~~~~~~~~~~~~~~~~~
-Непредвиденная лексема "СЃРєР°С‡РёРІР°РЅРёРµ" в выражении или операторе.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:165
-+ ... РѕСЂРІР°Р»РѕСЃСЊ. РџРѕРїСЂРѕР±СѓР№ VPN РёР»Рё РґСЂСѓРіСѓСЋ СЃРµС‚СЊ."
-+                                                                     ~~~~~
-В строке отсутствует завершающий символ: '.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:19 знак:24
-+ if ($size -lt 1000000) {
-+                        ~
-Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
-    + CategoryInfo          : ParserError: (:) [], ParseException
-    + FullyQualifiedErrorId : UnexpectedToken
- 
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:76
-+ ... ѕРј РјР°Р»РµРЅСЊРєРёР№ ($size bytes) вЂ” СЃРєР°С‡РёРІР°РЅРёРµ РѕР±РѕС ...
-+                                              ~~~~~~~~~~~~~~~~~~~~
-Непредвиденная лексема "СЃРєР°С‡РёРІР°РЅРёРµ" в выражении или операторе.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:165
-+ ... РѕСЂРІР°Р»РѕСЃСЊ. РџРѕРїСЂРѕР±СѓР№ VPN РёР»Рё РґСЂСѓРіСѓСЋ СЃРµС‚СЊ."
-+                                                                     ~~~~~
-В строке отсутствует завершающий символ: '.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:19 знак:24
-+ if ($size -lt 1000000) {
-+                        ~
-Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
-    + CategoryInfo          : ParserError: (:) [], ParseException
-    + FullyQualifiedErrorId : UnexpectedToken
- 
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:76
-+ ... ѕРј РјР°Р»РµРЅСЊРєРёР№ ($size bytes) вЂ” СЃРєР°С‡РёРІР°РЅРёРµ РѕР±РѕС ...
-+                                              ~~~~~~~~~~~~~~~~~~~~
-Непредвиденная лексема "СЃРєР°С‡РёРІР°РЅРёРµ" в выражении или операторе.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:20 знак:165
-+ ... РѕСЂРІР°Р»РѕСЃСЊ. РџРѕРїСЂРѕР±СѓР№ VPN РёР»Рё РґСЂСѓРіСѓСЋ СЃРµС‚СЊ."
-+                                                                     ~~~~~
-В строке отсутствует завершающий символ: '.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master\download-deps.ps1:19 знак:24
-+ if ($size -lt 1000000) {
-+                        ~
-Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
-    + CategoryInfo          : ParserError: (:) [], ParseException
-    + FullyQualifiedErrorId : UnexpectedToken
- 
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> c
+Dockerfile.offline:21
+--------------------
+  19 |     # Скачай заранее: .\download-deps.ps1  →  vendor\etcd.tar.gz + vendor\confd
+  20 |     COPY vendor/etcd.tar.gz /tmp/etcd.tar.gz
+  21 | >>> COPY vendor/confd /tmp/confd
+  22 |     
+  23 |     RUN set -ex \
+--------------------
+ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref wc0r6f97fia3wso2lev97rgml::mkp4cnnj4757dyuuxjlg9dsw2: "/vendor/confd": not found
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> 
