@@ -192,16 +192,18 @@ git pull
 docker build --build-arg PG_MAJOR=15 -t patroni .
 ```
 
-**Вариант B — офлайн-сборка** (скачать на Windows, потом build без GitHub):
+**Вариант B — офлайн-сборка** (только если обычный build падает на etcd; нужны **оба** файла в `vendor\`):
 
 ```powershell
 .\download-deps.ps1
+# если curl падает — скачай в браузере (VPN) и положи в vendor\:
+#   etcd-v3.3.13-linux-amd64.tar.gz  ->  vendor\etcd.tar.gz
+#   confd-0.16.0-linux-amd64         ->  vendor\confd
+dir vendor
 docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
 ```
 
-Если `download-deps.ps1` тоже падает — включи VPN или скачай в браузере:
-- https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz → `vendor\etcd.tar.gz`
-- https://github.com/kelseyhightower/confd/releases/download/v0.16.0/confd-0.16.0-linux-amd64 → `vendor\confd`
+**Обычно офлайн не нужен** — если раньше `docker build --build-arg PG_MAJOR=15` уже прошёл, используй обычный Dockerfile + `fix-line-endings.ps1`.
 
 Иначе:
 

@@ -108,9 +108,8 @@ docker build --build-arg PG_MAJOR=15 -t patroni .
 | Ошибка в логе | Причина | Решение |
 |---------------|---------|---------|
 | `TLS handshake timeout` на `postgres:17` | Docker Hub недоступен | `--build-arg PG_MAJOR=15` (см. выше) |
-| `gzip: unexpected end of file` при etcd | GitHub оборвал скачивание | `git pull` и повторить build (есть retry), или офлайн: |
-| | | `.\download-deps.ps1` |
-| | | `docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .` |
+| `gzip: unexpected end of file` при etcd | GitHub оборвал скачивание | `git pull` и повторить обычный build; или офлайн (оба файла в `vendor\`) |
+| `vendor/confd: not found` при offline build | confd не скачался (curl reset) | Скачай confd в браузере в `vendor\confd`, или **не используй offline** — обычный build |
 | `entrypoint.sh: Syntax error` после `compose up` | CRLF в entrypoint.sh | Фаза 0 + `fix-line-endings.ps1` + **пересобрать** образ |
 
 `download-deps.ps1` нужен **только** если обычный build не качает etcd. Если build уже прошёл — **не запускай**.
