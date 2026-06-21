@@ -1,0 +1,64 @@
+﻿=== cluster debug 2026-06-21 14:52:22 ===
+
+=== docker ps -a ===
+NAMES                             STATUS                      PORTS
+demo-patroni3                     Exited (2) 10 minutes ago   
+demo-etcd2                        Exited (2) 10 minutes ago   
+demo-etcd3                        Exited (2) 10 minutes ago   
+demo-haproxy                      Exited (2) 10 minutes ago   
+demo-patroni1                     Exited (2) 10 minutes ago   
+demo-patroni2                     Exited (2) 10 minutes ago   
+demo-etcd1                        Exited (2) 10 minutes ago   
+postgres-ha-grafana-1             Up 10 minutes               0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+postgres-ha-prometheus-1          Up 10 minutes               0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+postgres-ha-postgres_exporter-1   Up 10 minutes               0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+bd_postgres_19-postgres-1         Exited (255) 29 hours ago   0.0.0.0:5433->5432/tcp
+db-postgres-1                     Exited (255) 29 hours ago   0.0.0.0:5432->5432/tcp
+
+=== docker logs demo-patroni1 last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker logs demo-patroni2 last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker logs demo-patroni3 last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker logs demo-etcd1 last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker logs demo-etcd2 last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker logs demo-etcd3 last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker logs demo-haproxy last 50 lines ===
+/entrypoint.sh: 2: 
+: not found
+/entrypoint.sh: 18: Syntax error: word unexpected (expecting "in")
+
+=== docker inspect demo-patroni1 ===
+exited exit=2 error=
+
+=== entrypoint.sh hex - 0d0a means CRLF ===
+
+=== docker images patroni ===
+IMAGE            ID             DISK USAGE   CONTENT SIZE   EXTRA
+patroni:latest   4fdd8a48c6e6        743MB          190MB   U    
+
+=== git core.autocrlf ===
+true
+

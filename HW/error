@@ -1,34 +1,19 @@
- 
+Unpacking objects: 100% (4/4), 1.19 KiB | 42.00 KiB/s, done.
+From github.com:aayagzhov/system-design-hse-miem-2026
+   5f7003f..d5f1eb5  hw1        -> origin/hw1
+Updating 5f7003f..d5f1eb5
+Fast-forward
+ HW/log_instruction.md | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
+ create mode 100644 HW/log_instruction.md
 PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> .\collect-cluster-debug.ps1
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:26 знак:13
-+ $lines.Add("=== docker inspect demo-patroni1 ===")
-+             ~
-Отсутствует ")" в вызове метода.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:30 знак:39
-+ $lines.Add("=== entrypoint.sh hex (0d 0a = CRLF) ===")
-+                                       ~~
-Непредвиденная лексема "0a" в выражении или операторе.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:30 знак:38
-+ $lines.Add("=== entrypoint.sh hex (0d 0a = CRLF) ===")
-+                                      ~
-Отсутствует закрывающий знак ")" в выражении.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:22 знак:67
-+ ... cker logs $c 2>&1 | Select-Object -Last 50 | ForEach-Object { $lines. ...
-+                                                                 ~
-Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:19 знак:29
-+ foreach ($c in $containers) {
-+                             ~
-Отсутствует закрывающий знак "}" в блоке операторов или определении типа.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:30 знак:48
-+ $lines.Add("=== entrypoint.sh hex (0d 0a = CRLF) ===")
-+                                                ~
-Непредвиденная лексема ")" в выражении или операторе.
-C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:47 знак:21
-+ Write-Host "OK: $out"
-+                     ~
-В строке отсутствует завершающий символ: ".
-    + CategoryInfo          : ParserError: (:) [], ParseException
-    + FullyQualifiedErrorId : MissingEndParenthesisInMethodCall
+Format-Hex : Не удается найти параметр, соответствующий имени параметра "Count".
+C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\collect-cluster-debug.ps1:38 знак:26
++     Format-Hex -Path $ep -Count 32 | Out-String | ForEach-Object { Ad ...
++                          ~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Format-Hex], ParameterBindingException
+    + FullyQualifiedErrorId : NamedParameterNotFound,Format-Hex
  
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+OK: C:\Users\User\CppProjects\system-design-hse-miem-2026\HW\cluster-debug.txt
 PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 
