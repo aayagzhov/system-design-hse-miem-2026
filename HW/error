@@ -1,52 +1,50 @@
-  22 |     
-  23 |     RUN set -ex \
---------------------
-ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref wc0r6f97fia3wso2lev97rgml::djcp286eofmxtgxy3h6kaplro: "/vendor/confd": not found
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> .\download-deps.ps1
->> 
-Downloading etcd...
-  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
-                                 Dload  Upload  Total   Spent   Left   Speed
-  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0           00:18              0
-curl: (35) Recv failure: Connection was reset
-Downloading confd...
-  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
-                                 Dload  Upload  Total   Spent   Left   Speed
-  0      0   0      0   0      0      0      0                              0
-  0      0   0      0   0      0      0      0           00:18              0
-curl: (35) Recv failure: Connection was reset
-OK: vendor\etcd.tar.gz (8502782 bytes), vendor\confd
-Next: docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
-
-[+] Building 0.4s (7/17)                                                                                                                    docker:desktop-linux
- => [internal] load build definition from Dockerfile.offline                                                                                                0.0s
- => => transferring dockerfile: 8.05kB                                                                                                                      0.0s
- => WARN: FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)                                                                             0.0s
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> docker build --build-arg PG_MAJOR=15 -t patroni .
+[+] Building 0.9s (16/16) FINISHED                                                                                                          docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                        0.1s
+ => => transferring dockerfile: 9.00kB                                                                                                                      0.0s
  => [internal] load metadata for docker.io/library/postgres:15                                                                                              0.1s
  => [internal] load .dockerignore                                                                                                                           0.0s
  => => transferring context: 2B                                                                                                                             0.0s
- => CACHED [builder 1/5] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                         0.1s
+ => [builder 1/3] FROM docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                0.1s
  => => resolve docker.io/library/postgres:15@sha256:866264fb97643e747f9d0981cd060114f83b49450e5bac4988324bb3c6af2fd7                                        0.1s
- => [internal] load build context                                                                                                                           0.1s
- => => transferring context: 3.55kB                                                                                                                         0.0s
- => CACHED [builder 2/5] COPY vendor/etcd.tar.gz /tmp/etcd.tar.gz                                                                                           0.0s
- => ERROR [builder 3/5] COPY vendor/confd /tmp/confd                                                                                                        0.0s
-------
- > [builder 3/5] COPY vendor/confd /tmp/confd:
-------
-
- 1 warning found (use docker --debug to expand):
- - FromAsCasing: 'as' and 'FROM' keywords' casing do not match (line 10)
-Dockerfile.offline:21
---------------------
-  19 |     # Скачай заранее: .\download-deps.ps1  →  vendor\etcd.tar.gz + vendor\confd
-  20 |     COPY vendor/etcd.tar.gz /tmp/etcd.tar.gz
-  21 | >>> COPY vendor/confd /tmp/confd
-  22 |     
-  23 |     RUN set -ex \
---------------------
-ERROR: failed to build: failed to solve: failed to compute cache key: failed to calculate checksum of ref wc0r6f97fia3wso2lev97rgml::mkp4cnnj4757dyuuxjlg9dsw2: "/vendor/confd": not found
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> 
+ => [internal] load build context                                                                                                                           0.0s
+ => => transferring context: 3.48kB                                                                                                                         0.0s
+ => CACHED [builder 2/3] RUN set -ex     && export DEBIAN_FRONTEND=noninteractive     && echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' >  0.0s
+ => CACHED [builder 3/3] RUN if [ "false" = "true" ]; then         set -ex         && echo 'postgres ALL=(ALL) NOPASSWD: /bin/tar xpJf /a.tar.xz -C /, /bi  0.0s
+ => CACHED [stage-1 1/8] COPY --from=builder / /                                                                                                            0.0s
+ => CACHED [stage-1 2/8] COPY patroni /patroni/                                                                                                             0.0s
+ => CACHED [stage-1 3/8] COPY extras/confd/conf.d/haproxy.toml /etc/confd/conf.d/                                                                           0.0s
+ => CACHED [stage-1 4/8] COPY extras/confd/templates/haproxy.tmpl /etc/confd/templates/                                                                     0.0s
+ => CACHED [stage-1 5/8] COPY patroni*.py docker/entrypoint.sh /                                                                                            0.0s
+ => CACHED [stage-1 6/8] COPY postgres?.yml /home/postgres/                                                                                                 0.0s
+ => CACHED [stage-1 7/8] WORKDIR /home/postgres                                                                                                             0.0s
+ => CACHED [stage-1 8/8] RUN sed -i 's/env python/&3/' /patroni*.py     && sed -i 's/^  listen: 127.0.0.1/  listen: 0.0.0.0/' postgres?.yml     && sed -i   0.0s
+ => exporting to image                                                                                                                                      0.3s
+ => => exporting layers                                                                                                                                     0.0s
+ => => exporting manifest sha256:fed0c30afcaa9fb0db09772a71b308ac11d117725a720d97eb5fdb50c4e74600                                                           0.0s
+ => => exporting config sha256:b0c9bfc70f515d8f5a50a672bbc42b53a9c9b7b174d409e053cae72960fedd4d                                                             0.0s
+ => => exporting attestation manifest sha256:a7b22973e9040ac52e61ef31d6f5a79174033476474f5bb35f4ee4fb74d484b0                                               0.1s
+ => => exporting manifest list sha256:4fdd8a48c6e6c376a79c045ba9b34163bf525d4736fb8f4d8019b4f96b273d0d                                                      0.0s
+ => => naming to docker.io/library/patroni:latest                                                                                                           0.0s
+ => => unpacking to docker.io/library/patroni:latest                                                                                                        0.0s
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha\patroni-master> cd ..
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker compose up -d
+time="2026-06-21T14:41:25+03:00" level=warning msg="C:\\Users\\User\\CppProjects\\system-design-hse-miem-2026\\code\\postgres-ha\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Running 10/10
+ ✔ Container demo-etcd3                       Started                                                                                                       3.3s 
+ ✔ Container demo-haproxy                     Started                                                                                                       4.6s 
+ ✔ Container demo-patroni1                    Started                                                                                                       3.3s 
+ ✔ Container demo-patroni2                    Started                                                                                                       4.5s 
+ ✔ Container demo-etcd2                       Started                                                                                                       3.3s 
+ ✔ Container demo-etcd1                       Started                                                                                                       4.3s 
+ ✔ Container demo-patroni3                    Started                                                                                                       4.3s 
+ ✔ Container postgres-ha-prometheus-1         Started                                                                                                       2.1s 
+ ✔ Container postgres-ha-postgres_exporter-1  Started                                                                                                       2.1s 
+ ✔ Container postgres-ha-grafana-1            Started                                                                                                       0.5s 
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+NAMES                             STATUS         PORTS
+postgres-ha-grafana-1             Up 7 seconds   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+postgres-ha-prometheus-1          Up 9 seconds   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+postgres-ha-postgres_exporter-1   Up 9 seconds   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 patronictl list
+Error response from daemon: container 233fb6313a019a828cab5b91d7ce91b82b561793653fdfc081940e3df0037279 is not running
