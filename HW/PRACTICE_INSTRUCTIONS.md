@@ -155,6 +155,8 @@ docker compose down
 
 # Practice HW2 — Patroni PostgreSQL HA (только терминал)
 
+**Подробный пошаговый план:** [HW2_PRACTICE_PLAN.md](./HW2_PRACTICE_PLAN.md) — читай его, если делаешь HW2 впервые или что-то падает.
+
 **Проект:** `code\postgres-ha`  
 **Отчёт:** `HW\HW2_PRACTICE_SOLUTION.md`
 

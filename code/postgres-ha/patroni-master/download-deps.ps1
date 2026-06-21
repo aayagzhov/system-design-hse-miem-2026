@@ -1,5 +1,5 @@
-# Скачать etcd и confd на Windows, если docker build падает на GitHub
-# Запуск: .\download-deps.ps1
+# Download etcd + confd for offline docker build (only if normal build fails on GitHub)
+# Run: .\download-deps.ps1
 
 $ErrorActionPreference = "Stop"
 $vendor = Join-Path $PSScriptRoot "vendor"
@@ -14,11 +14,10 @@ curl.exe -fL --retry 10 --retry-delay 5 --connect-timeout 30 -o "$vendor\etcd.ta
 Write-Host "Downloading confd..."
 curl.exe -fL --retry 10 --retry-delay 5 --connect-timeout 30 -o "$vendor\confd" $confdUrl
 
-# Проверка, что etcd-архив не битый
 $size = (Get-Item "$vendor\etcd.tar.gz").Length
 if ($size -lt 1000000) {
-    throw "etcd.tar.gz слишком маленький ($size bytes) — скачивание оборвалось. Попробуй VPN или другую сеть."
+    throw "etcd.tar.gz too small ($size bytes). Download failed. Try VPN or another network."
 }
 
 Write-Host "OK: vendor\etcd.tar.gz ($size bytes), vendor\confd"
-Write-Host "Теперь: docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni ."
+Write-Host "Next: docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni ."
