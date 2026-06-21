@@ -1,37 +1,19 @@
-# Кластер Up — patronictl и CRLF
-
-Контейнеры работают. Ошибка только в `patronictl` (CRLF в `patronictl.py` на Windows).
-
-## Сейчас — проверить кластер (работает без rebuild)
-
-```powershell
-docker exec demo-patroni1 python3 /patronictl.py list
-```
-
-Должно показать 3 ноды и Leader.
-
-## Починить patronictl навсегда
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026
-git pull
-
-cd code\postgres-ha
-.\fix-line-endings.ps1
-
-cd patroni-master
-docker build -f Dockerfile.offline --build-arg PG_MAJOR=15 -t patroni .
-
-cd ..
-docker compose up -d --force-recreate demo-patroni1 demo-patroni2 demo-patroni3
-Start-Sleep -Seconds 60
-docker exec demo-patroni1 patronictl list
-```
-
-Без `--no-cache` — быстрее, vendor уже есть.
-
-## Дальше по практике HW2
-
-```powershell
-Get-Content init-schema.sql | docker exec -i demo-patroni1 psql -U postgres -h haproxy -p 5001 -d postgres
-```
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> .\collect-cluster-debug.ps1
+WARNING: This output is designed for human readability. For machine-readable output, please use --format.
+OK: C:\Users\User\CppProjects\system-design-hse-miem-2026\HW\cluster-debug.txt
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+NAMES                             STATUS         PORTS
+postgres-ha-grafana-1             Up 6 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+demo-etcd3                        Up 6 minutes   
+demo-patroni3                     Up 6 minutes   
+demo-etcd1                        Up 6 minutes   
+demo-patroni1                     Up 6 minutes   
+demo-patroni2                     Up 6 minutes   
+postgres-ha-postgres_exporter-1   Up 6 minutes   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+demo-etcd2                        Up 6 minutes   
+postgres-ha-prometheus-1          Up 6 minutes   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+demo-haproxy                      Up 6 minutes   0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 patronictl list
+env: ‘python3\r’: No such file or directory
+env: use -[v]S to pass options in shebang lines
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 
