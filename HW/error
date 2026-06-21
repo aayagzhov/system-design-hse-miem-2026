@@ -1,19 +1,69 @@
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> git pull
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 4 (delta 3), reused 4 (delta 3), pack-reused 0 (from 0)
+Unpacking objects: 100% (4/4), 1.28 KiB | 54.00 KiB/s, done.
+From github.com:aayagzhov/system-design-hse-miem-2026
+   33e9ee9..b598d1c  hw1        -> origin/hw1
+Updating 33e9ee9..b598d1c
+Fast-forward
+ HW/PRACTICE_INSTRUCTIONS.md | 99 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 61 insertions(+), 38 deletions(-)
 PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> .\collect-cluster-debug.ps1
 WARNING: This output is designed for human readability. For machine-readable output, please use --format.
 OK: C:\Users\User\CppProjects\system-design-hse-miem-2026\HW\cluster-debug.txt
 PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 NAMES                             STATUS         PORTS
-postgres-ha-grafana-1             Up 6 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
-demo-etcd3                        Up 6 minutes   
-demo-patroni3                     Up 6 minutes   
-demo-etcd1                        Up 6 minutes   
-demo-patroni1                     Up 6 minutes   
-demo-patroni2                     Up 6 minutes   
-postgres-ha-postgres_exporter-1   Up 6 minutes   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
-demo-etcd2                        Up 6 minutes   
-postgres-ha-prometheus-1          Up 6 minutes   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
-demo-haproxy                      Up 6 minutes   0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
-PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 patronictl list
-env: ‘python3\r’: No such file or directory
-env: use -[v]S to pass options in shebang lines
+postgres-ha-grafana-1             Up 9 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+demo-etcd3                        Up 9 minutes   
+demo-patroni3                     Up 9 minutes   
+demo-etcd1                        Up 9 minutes   
+demo-patroni1                     Up 9 minutes   
+demo-patroni2                     Up 9 minutes   
+postgres-ha-postgres_exporter-1   Up 9 minutes   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+demo-etcd2                        Up 9 minutes   
+postgres-ha-prometheus-1          Up 9 minutes   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+demo-haproxy                      Up 9 minutes   0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 python3 /patronictl.py list
++ Cluster: demo (7653822632427204631) --------+----+-------------+-----+------------+-----+
+| Member   | Host       | Role    | State     | TL | Receive LSN | Lag | Replay LSN | Lag |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+| patroni1 | 172.21.0.4 | Leader  | running   |  1 |             |     |            |     |
+| patroni2 | 172.21.0.6 | Replica | streaming |  1 |   0/404B490 |   0 |  0/404B490 |   0 |
+| patroni3 | 172.21.0.5 | Replica | streaming |  1 |   0/404B490 |   0 |  0/404B490 |   0 |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 python3 /patronictl.py list | Out-File ..\..\HW\screenshots\patronictl-list.txt -Encoding utf8
+
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni2 python3 /patronictl.py list
++ Cluster: demo (7653822632427204631) --------+----+-------------+-----+------------+-----+
+| Member   | Host       | Role    | State     | TL | Receive LSN | Lag | Replay LSN | Lag |                                                                                                        
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+                                                                                                        
+| patroni1 | 172.21.0.4 | Leader  | running   |  1 |             |     |            |     |                                                                                                        
+| patroni2 | 172.21.0.6 | Replica | streaming |  1 |   0/404B490 |   0 |  0/404B490 |   0 |                                                                                                        
+| patroni3 | 172.21.0.5 | Replica | streaming |  1 |   0/404B490 |   0 |  0/404B490 |   0 |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni3 python3 /patronictl.py list
++ Cluster: demo (7653822632427204631) --------+----+-------------+-----+------------+-----+
+| Member   | Host       | Role    | State     | TL | Receive LSN | Lag | Replay LSN | Lag |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+| patroni1 | 172.21.0.4 | Leader  | running   |  1 |             |     |            |     |
+| patroni2 | 172.21.0.6 | Replica | streaming |  1 |   0/404B490 |   0 |  0/404B490 |   0 |
+| patroni3 | 172.21.0.5 | Replica | streaming |  1 |   0/404B490 |   0 |  0/404B490 |   0 |
++----------+------------+---------+-----------+----+-------------+-----+------------+-----+
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing | Select-Object StatusCode, Content
+
+StatusCode Content                                                                                                                                                                                
+---------- -------                                                                                                                                                                                
+       200 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"...                                                                                                                      
+
+
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing -OutFile ..\..\..\HW\screenshots\haproxy-stats.html
+Invoke-WebRequest : Не удалось найти часть пути "C:\Users\User\CppProjects\HW\screenshots\haproxy-stats.html".
+строка:1 знак:1
++ Invoke-WebRequest -Uri http://localhost:7001/ -UseBasicParsing -OutFi ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Invoke-WebRequest], DirectoryNotFoundException
+    + FullyQualifiedErrorId : System.IO.DirectoryNotFoundException,Microsoft.PowerShell.Commands.InvokeWebRequestCommand
+ 
 PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 

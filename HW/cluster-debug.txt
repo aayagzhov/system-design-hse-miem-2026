@@ -1,40 +1,21 @@
-﻿=== cluster debug 2026-06-21 15:26:53 ===
+﻿=== cluster debug 2026-06-21 15:29:59 ===
 
 === docker ps -a ===
 NAMES                             STATUS                      PORTS
-postgres-ha-grafana-1             Up 6 minutes                0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
-demo-etcd3                        Up 6 minutes                
-demo-patroni3                     Up 6 minutes                
-demo-etcd1                        Up 6 minutes                
-demo-patroni1                     Up 6 minutes                
-demo-patroni2                     Up 6 minutes                
-postgres-ha-postgres_exporter-1   Up 6 minutes                0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
-demo-etcd2                        Up 6 minutes                
-postgres-ha-prometheus-1          Up 6 minutes                0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
-demo-haproxy                      Up 6 minutes                0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
+postgres-ha-grafana-1             Up 9 minutes                0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+demo-etcd3                        Up 9 minutes                
+demo-patroni3                     Up 9 minutes                
+demo-etcd1                        Up 9 minutes                
+demo-patroni1                     Up 9 minutes                
+demo-patroni2                     Up 9 minutes                
+postgres-ha-postgres_exporter-1   Up 9 minutes                0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+demo-etcd2                        Up 9 minutes                
+postgres-ha-prometheus-1          Up 9 minutes                0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+demo-haproxy                      Up 9 minutes                0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
 bd_postgres_19-postgres-1         Exited (255) 29 hours ago   0.0.0.0:5433->5432/tcp
 db-postgres-1                     Exited (255) 29 hours ago   0.0.0.0:5432->5432/tcp
 
 === docker logs demo-patroni1 last 50 lines ===
-2026-06-21 12:20:56.194 UTC [34] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
-2026-06-21 12:20:56.210 UTC [38] LOG:  database system was shut down at 2026-06-21 12:20:50 UTC
-2026-06-21 12:20:56.233 UTC [34] LOG:  database system is ready to accept connections
-2026-06-21 12:20:56,340 INFO: establishing a new patroni heartbeat connection to postgres
-localhost:5432 - accepting connections
-2026-06-21 12:20:56,361 INFO: establishing a new patroni restapi connection to postgres
-localhost:5432 - accepting connections
-2026-06-21 12:20:57,390 INFO: running post_bootstrap
-2026-06-21 12:20:57,782 INFO: initialized a new cluster
-2026-06-21 12:20:59.753 UTC [36] LOG:  checkpoint starting: force wait
-2026-06-21 12:21:00.304 UTC [36] LOG:  checkpoint complete: wrote 7 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.414 s, sync=0.025 s, total=0.552 s; sync files=6, longest=0.013 s, average=0.005 s; distance=8918 kB, estimate=8918 kB
-2026-06-21 12:21:00.304 UTC [36] LOG:  checkpoint starting: force wait
-2026-06-21 12:21:00.329 UTC [36] LOG:  checkpoint complete: wrote 0 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.001 s, total=0.025 s; sync files=0, longest=0.000 s, average=0.000 s; distance=0 kB, estimate=8026 kB
-2026-06-21 12:21:07,801 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:21:14,904 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:21:27,519 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:21:34,783 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:21:47,514 INFO: no action. I am (patroni1), the leader with the lock
-2026-06-21 12:21:57,516 INFO: no action. I am (patroni1), the leader with the lock
 2026-06-21 12:22:04,780 INFO: no action. I am (patroni1), the leader with the lock
 2026-06-21 12:22:17,512 INFO: no action. I am (patroni1), the leader with the lock
 2026-06-21 12:22:27,630 INFO: no action. I am (patroni1), the leader with the lock
@@ -66,27 +47,27 @@ localhost:5432 - accepting connections
 2026-06-21 12:26:27,513 INFO: no action. I am (patroni1), the leader with the lock
 2026-06-21 12:26:34,822 INFO: no action. I am (patroni1), the leader with the lock
 2026-06-21 12:26:47,516 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:26:57,513 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:27:04,784 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:27:17,517 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:27:27,518 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:27:34,790 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:27:47,517 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:27:57,517 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:28:04,852 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:28:17,517 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:28:24,790 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:28:37,516 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:28:47,516 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:28:54,785 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:29:07,523 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:29:17,516 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:29:24,776 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:29:37,523 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:29:47,512 INFO: no action. I am (patroni1), the leader with the lock
+2026-06-21 12:29:54,810 INFO: no action. I am (patroni1), the leader with the lock
 
 === docker logs demo-patroni2 last 50 lines ===
-2026-06-21 12:21:06.819 UTC [38] LOG:  starting backup recovery with redo LSN 0/2000028, checkpoint LSN 0/2000060, on timeline ID 1
-2026-06-21 12:21:06.836 UTC [38] LOG:  redo starts at 0/2000028
-2026-06-21 12:21:06.844 UTC [38] LOG:  completed backup recovery with redo LSN 0/2000028 and end LSN 0/20001B0
-2026-06-21 12:21:06.844 UTC [38] LOG:  consistent recovery state reached at 0/20001B0
-2026-06-21 12:21:06.844 UTC [34] LOG:  database system is ready to accept read-only connections
-2026-06-21 12:21:06.870 UTC [39] LOG:  started streaming WAL from primary at 0/3000000 on timeline 1
-2026-06-21 12:21:06,859 INFO: Lock owner: patroni1; I am patroni2
-2026-06-21 12:21:06,961 INFO: bootstrap from leader 'patroni1' in progress
-2026-06-21 12:21:07,422 INFO: Lock owner: patroni1; I am patroni2
-2026-06-21 12:21:07,422 INFO: establishing a new patroni heartbeat connection to postgres
-2026-06-21 12:21:07,474 INFO: establishing a new patroni restapi connection to postgres
-2026-06-21 12:21:07,634 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:18,024 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:27,971 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:35,355 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:47,963 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:57,969 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:05,270 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:17,973 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
 2026-06-21 12:22:28,028 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
 2026-06-21 12:22:35,297 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
 2026-06-21 12:22:48,236 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
@@ -118,27 +99,27 @@ localhost:5432 - accepting connections
 2026-06-21 12:26:27,964 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
 2026-06-21 12:26:35,276 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
 2026-06-21 12:26:47,972 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:26:57,968 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:05,230 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:17,968 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:27,969 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:35,245 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:47,995 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:57,975 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:05,386 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:17,963 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:25,239 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:37,995 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:47,994 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:55,256 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:08,019 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:18,039 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:25,230 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:37,971 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:45,323 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:58,010 INFO: no action. I am (patroni2), a secondary, and following a leader (patroni1)
 
 === docker logs demo-patroni3 last 50 lines ===
-2026-06-21 12:21:07.046 UTC [37] LOG:  entering standby mode
-2026-06-21 12:21:07.047 UTC [37] LOG:  starting backup recovery with redo LSN 0/20000D8, checkpoint LSN 0/2000110, on timeline ID 1
-2026-06-21 12:21:07.059 UTC [37] LOG:  redo starts at 0/20000D8
-2026-06-21 12:21:07.064 UTC [37] LOG:  completed backup recovery with redo LSN 0/20000D8 and end LSN 0/3000050
-2026-06-21 12:21:07.065 UTC [37] LOG:  consistent recovery state reached at 0/3000050
-2026-06-21 12:21:07.065 UTC [33] LOG:  database system is ready to accept read-only connections
-2026-06-21 12:21:07.087 UTC [43] LOG:  started streaming WAL from primary at 0/4000000 on timeline 1
-2026-06-21 12:21:07,658 INFO: Lock owner: patroni1; I am patroni3
-2026-06-21 12:21:07,658 INFO: establishing a new patroni heartbeat connection to postgres
-2026-06-21 12:21:07,888 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:08,005 INFO: establishing a new patroni restapi connection to postgres
-2026-06-21 12:21:18,268 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:28,208 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-localhost:5432 - accepting connections
-2026-06-21 12:21:35,471 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:48,207 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:21:58,464 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:05,529 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
-2026-06-21 12:22:18,235 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
 2026-06-21 12:22:28,285 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
 2026-06-21 12:22:35,546 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
 2026-06-21 12:22:48,353 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
@@ -170,6 +151,25 @@ localhost:5432 - accepting connections
 2026-06-21 12:26:28,560 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
 2026-06-21 12:26:35,653 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
 2026-06-21 12:26:48,373 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:26:58,210 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:05,471 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:18,205 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:28,303 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:35,497 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:48,397 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:27:58,212 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:05,648 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:18,228 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:25,533 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:38,384 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:48,308 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:28:55,497 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:08,269 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:18,296 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:25,463 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:38,255 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:45,527 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
+2026-06-21 12:29:58,307 INFO: no action. I am (patroni3), a secondary, and following a leader (patroni1)
 
 === docker logs demo-etcd1 last 50 lines ===
 2026-06-21 12:20:43.966833 I | etcdserver: initial cluster = etcd1=http://etcd1:2380,etcd2=http://etcd2:2380,etcd3=http://etcd3:2380
@@ -329,14 +329,14 @@ proto: no encoder for ValueSize int [GetProperties]
 
 === docker logs demo-haproxy last 50 lines ===
 1bab629f01fa9065, started, etcd3, http://etcd3:2380, http://172.21.0.3:2379
-8ecb6af518d241cc, started, etcd2, http://etcd2:2380, http://172.21.0.2:2379
-b2e169fcb8a34028, started, etcd1, http://etcd1:2380, http://172.21.0.7:2379
 2026-06-21T12:20:44Z haproxy confd[58]: INFO Backend set to etcdv3
 2026-06-21T12:20:44Z haproxy confd[58]: INFO Starting confd
 2026-06-21T12:20:44Z haproxy confd[58]: INFO Backend source(s) set to http://etcd1:2379, http://etcd2:2379, http://etcd3:2379
 2026-06-21T12:20:44Z haproxy confd[58]: INFO /etc/haproxy/haproxy.cfg has md5sum 4ff4145ad0c378b536651033f2ad6421 should be 7624a5cb2369166354d697a9628b73b9
 2026-06-21T12:20:44Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg out of sync
 2026-06-21T12:20:44Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg has been updated
+8ecb6af518d241cc, started, etcd2, http://etcd2:2380, http://172.21.0.2:2379
+b2e169fcb8a34028, started, etcd1, http://etcd1:2380, http://172.21.0.7:2379
 2026-06-21T12:20:54Z haproxy confd[58]: INFO /etc/haproxy/haproxy.cfg has md5sum 7624a5cb2369166354d697a9628b73b9 should be 073f19cb528e68409ce2d9dbfd17830f
 2026-06-21T12:20:54Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg out of sync
 2026-06-21T12:20:54Z haproxy confd[58]: INFO Target config /etc/haproxy/haproxy.cfg has been updated
