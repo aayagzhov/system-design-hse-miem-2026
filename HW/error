@@ -1,25 +1,29 @@
-# Сейчас: confd в репозитории — pull на Windows и сборка
-
-`vendor/confd` уже в git (скачан на Mac). `etcd.tar.gz` на Windows уже должен быть локально (~10 MB).
-
-## Windows — одна команда
-
-```powershell
-cd C:\Users\User\CppProjects\system-design-hse-miem-2026
-git pull
-
-cd code\postgres-ha
-.\fix-and-rebuild.ps1
-```
-
-Если скрипт скажет что нет `etcd.tar.gz`:
-
-```powershell
-dir patroni-master\vendor
-```
-
-Если нет etcd — скачать в браузере:
-https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
-→ `patroni-master\vendor\etcd.tar.gz`
-
-Потом снова `.\fix-and-rebuild.ps1`
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker compose up -d
+time="2026-06-21T15:22:51+03:00" level=warning msg="C:\\Users\\User\\CppProjects\\system-design-hse-miem-2026\\code\\postgres-ha\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Running 10/10
+ ✔ Container postgres-ha-prometheus-1         Running                                                                                                       0.0s 
+ ✔ Container demo-etcd3                       Running                                                                                                       0.0s 
+ ✔ Container demo-haproxy                     Running                                                                                                       0.0s 
+ ✔ Container postgres-ha-postgres_exporter-1  Running                                                                                                       0.0s 
+ ✔ Container demo-patroni3                    Running                                                                                                       0.0s 
+ ✔ Container demo-etcd1                       Running                                                                                                       0.0s 
+ ✔ Container postgres-ha-grafana-1            Running                                                                                                       0.0s 
+ ✔ Container demo-etcd2                       Running                                                                                                       0.0s 
+ ✔ Container demo-patroni1                    Running                                                                                                       0.0s 
+ ✔ Container demo-patroni2                    Running                                                                                                       0.0s 
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+NAMES                             STATUS         PORTS
+postgres-ha-grafana-1             Up 2 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp
+demo-etcd3                        Up 2 minutes   
+demo-patroni3                     Up 2 minutes   
+demo-etcd1                        Up 2 minutes   
+demo-patroni1                     Up 2 minutes   
+demo-patroni2                     Up 2 minutes   
+postgres-ha-postgres_exporter-1   Up 2 minutes   0.0.0.0:9187->9187/tcp, [::]:9187->9187/tcp
+demo-etcd2                        Up 2 minutes   
+postgres-ha-prometheus-1          Up 2 minutes   0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp
+demo-haproxy                      Up 2 minutes   0.0.0.0:5001->5001/tcp, [::]:5001->5001/tcp, 0.0.0.0:5002->5000/tcp, [::]:5002->5000/tcp, 0.0.0.0:7001->7000/tcp, [::]:7001->7000/tcp
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> docker exec demo-patroni1 patronictl list
+env: ‘python3\r’: No such file or directory
+env: use -[v]S to pass options in shebang lines
+PS C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha> 
