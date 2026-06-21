@@ -1,69 +1,9 @@
-# Сбор логов кластера (Windows PC)
-
-Выполни на ПК, где крутится Docker. Результат попадёт в `HW/cluster-debug.txt`.
-
-## Шаг 1 — открой PowerShell и перейди в проект
+# Логи кластера (Windows) — только команды
 
 ```powershell
 cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
+.\collect-cluster-debug.ps1
 ```
-
-## Шаг 2 — скопируй и выполни целиком
-
-```powershell
-$out = Join-Path (Split-Path (Split-Path $PWD)) "HW\cluster-debug.txt"
-$lines = New-Object System.Collections.Generic.List[string]
-
-$lines.Add("=== cluster debug $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ===")
-$lines.Add("")
-$lines.Add("=== docker ps -a ===")
-docker ps -a --format "table {{.Names}}`t{{.Status}}`t{{.Ports}}" | ForEach-Object { $lines.Add($_) }
-
-$containers = @(
-    "demo-patroni1", "demo-patroni2", "demo-patroni3",
-    "demo-etcd1", "demo-etcd2", "demo-etcd3",
-    "demo-haproxy"
-)
-
-foreach ($c in $containers) {
-    $lines.Add("")
-    $lines.Add("=== docker logs $c (last 50 lines) ===")
-    try {
-        docker logs $c 2>&1 | Select-Object -Last 50 | ForEach-Object { $lines.Add("$_) }
-    } catch {
-        $lines.Add("ERROR: $_")
-    }
-}
-
-$lines.Add("")
-$lines.Add("=== docker inspect demo-patroni1 (State) ===")
-docker inspect demo-patroni1 --format "{{.State.Status}} exit={{.State.ExitCode}} error={{.State.Error}}" 2>&1 | ForEach-Object { $lines.Add($_) }
-
-$lines.Add("")
-$lines.Add("=== entrypoint.sh — первые 16 байт (0d 0a = CRLF, 0a = LF) ===")
-$ep = Join-Path $PWD "patroni-master\docker\entrypoint.sh"
-if (Test-Path $ep) {
-    Format-Hex -Path $ep -Count 32 | ForEach-Object { $lines.Add($_.ToString()) }
-} else {
-    $lines.Add("NOT FOUND: $ep")
-}
-
-$lines.Add("")
-$lines.Add("=== docker images patroni ===")
-docker images patroni | ForEach-Object { $lines.Add($_) }
-
-$lines.Add("")
-$lines.Add("=== git core.autocrlf ===")
-git -C (Split-Path (Split-Path $PWD)) config core.autocrlf 2>&1 | ForEach-Object { $lines.Add($_) }
-
-$lines | Out-File -FilePath $out -Encoding utf8
-Write-Host ""
-Write-Host "OK: $out"
-Write-Host "Открой файл, проверь что там есть логи patroni/etcd."
-Write-Host "Дальше: git add HW/cluster-debug.txt && git commit && git push"
-```
-
-## Шаг 3 — закоммить и подтянуть на Mac
 
 ```powershell
 cd C:\Users\User\CppProjects\system-design-hse-miem-2026
@@ -72,32 +12,17 @@ git commit -m "debug: patroni cluster logs"
 git push
 ```
 
-На Mac:
+Mac:
 
 ```bash
 git pull
 ```
 
-Пришли сюда `@HW/cluster-debug.txt` или просто напиши «подтянул».
-
----
-
-## Если контейнеры уже удалены
-
-Сначала подними кластер (чтобы были логи), подожди 30 сек, потом шаг 2:
+Если контейнеров нет — сначала:
 
 ```powershell
 cd C:\Users\User\CppProjects\system-design-hse-miem-2026\code\postgres-ha
 docker compose up -d
 Start-Sleep -Seconds 30
-# затем скрипт из шага 2
+.\collect-cluster-debug.ps1
 ```
-
----
-
-## Предыдущая ошибка (для контекста)
-
-- `docker build` — OK (всё CACHED)
-- `docker compose up` — Started, но patroni/etcd/haproxy сразу упали
-- `docker ps` — только grafana, prometheus, postgres_exporter
-- `docker exec demo-patroni1 patronictl list` → `container is not running`
