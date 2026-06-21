@@ -68,4 +68,26 @@ Start-Sleep -Seconds 30
 - в `docker ps` только grafana, prometheus, postgres_exporter
 - `docker exec demo-patroni1 patronictl list` → `container is not running`
 
-Частая причина на Windows: CRLF в `entrypoint.sh` → нужны `fix-line-endings.ps1` и `docker build --no-cache`.
+Частая причина на Windows: CRLF в `entrypoint.sh` → см. раздел **Исправление** ниже.
+
+---
+
+## Исправление CRLF (если в логах `entrypoint.sh: Syntax error`)
+
+```powershell
+cd C:\Users\User\CppProjects\system-design-hse-miem-2026
+git config core.autocrlf false
+
+cd code\postgres-ha
+.\fix-line-endings.ps1
+
+cd patroni-master
+docker build --no-cache --build-arg PG_MAJOR=15 -t patroni .
+
+cd ..
+docker compose down
+docker compose up -d
+Start-Sleep -Seconds 90
+docker ps
+docker exec demo-patroni1 patronictl list
+```

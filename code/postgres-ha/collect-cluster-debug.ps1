@@ -35,7 +35,12 @@ Add-Line ""
 Add-Line "=== entrypoint.sh hex - 0d0a means CRLF ==="
 $ep = Join-Path $PSScriptRoot "patroni-master\docker\entrypoint.sh"
 if (Test-Path $ep) {
-    Format-Hex -Path $ep -Count 32 | Out-String | ForEach-Object { Add-Line $_ }
+    $bytes = [System.IO.File]::ReadAllBytes($ep)[0..31]
+    $hex = ($bytes | ForEach-Object { $_.ToString("X2") }) -join " "
+    Add-Line $hex
+    if ($hex -match "0D 0A") {
+        Add-Line "CRLF detected - run fix-line-endings.ps1 and rebuild with --no-cache"
+    }
 } else {
     Add-Line ("NOT FOUND: " + $ep)
 }
